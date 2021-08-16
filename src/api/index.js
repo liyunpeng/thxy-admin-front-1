@@ -12,7 +12,7 @@ export const fetchData = query => {
 
 export const getAllCourseIds = query => {
     return request({
-        url: './getAllCourseIds',
+        url: './api/getAllCourseIds',
         method: 'post',
         params: query
     });

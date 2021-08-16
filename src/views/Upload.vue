@@ -186,10 +186,12 @@ export default {
     },
   },
   mounted() {
-    getAllCourseIds(query).then((res) => {
-
-        tableData.value = res.list;
-        pageTotal.value = res.pageTotal || 50;
+    debugger
+    getAllCourseIds().then((res) => {
+        this.selectedItem = res;
+        console.log(res);
+        // tableData.value = res.list;
+        // pageTotal.value = res.pageTotal || 50;
     });
   }, 
   setup() {
