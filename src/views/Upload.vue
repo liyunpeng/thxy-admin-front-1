@@ -186,9 +186,10 @@ export default {
     },
   },
   mounted() {
-    debugger
+    // debugger
     getAllCourseIds().then((res) => {
-        this.selectedItem = res;
+        // this.selectedItem = res;
+        this.options = res;
         console.log(res);
         // tableData.value = res.list;
         // pageTotal.value = res.pageTotal || 50;
