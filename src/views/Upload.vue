@@ -25,14 +25,18 @@
                 Element UI自带上传组件。
                 访问地址：
                 <a href="http://element.eleme.io/#/zh-CN/component/upload" target="_blank">Element UI Upload</a>
-            </div> -->
+            </div> 
+            // accept=".pdf" // 限制文件格式 
+            -->
       <el-upload
         webki
         webkitdirectory="true"
         class="upload-demo"
+        :before-upload="handleBefore"
         drag
         action="http://localhost:8082/api/multiUpload"
         multiple
+        :data="{courseId: courseId}"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
@@ -68,6 +72,8 @@ export default {
   },
   data() {
     return {
+      courseId: 1,
+      　pdfData: { 'courseId' : 1 },
       selectedItem: -1, 
       value: [],
       options: [
@@ -177,8 +183,15 @@ export default {
     };
   },
   methods: {
+
+    handleBefore(file) {
+      // debugger
+      // this.pdfData.courseId = 1;
+      // this.courseId = 5;
+    }, 
     handleChange(value) {
     //   debugger
+    this.courseId = value[value.length-1];
     this.selectedItem = value[value.length-1];
 
       console.log("i=", value[value.length-1]);
