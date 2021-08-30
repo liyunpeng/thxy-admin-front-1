@@ -36,7 +36,7 @@
         drag
         action="http://localhost:8082/api/multiUpload"
         multiple
-        :data="{courseId: courseId}"
+        :data="{courseId: courseId, duration: audioDuration}"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
@@ -72,6 +72,7 @@ export default {
   },
   data() {
     return {
+    audioDuration: '100',  //时长
       courseId: 1,
       　pdfData: { 'courseId' : 1 },
       selectedItem: -1, 
@@ -184,7 +185,46 @@ export default {
   },
   methods: {
 
+// beforeAvatarUpload(file) {
+		
+// 	},
+
+	  getTimes(file) {  //获取时长
+	    var content = file;
+      const sleep = (timeout) => {
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve();
+          }, timeout)
+        });
+      };
+
+	    var url = URL.createObjectURL(content);
+	    //经测试，发现audio也可获取视频的时长
+	    var audioElement = new Audio(url);
+	    audioElement.addEventListener("loadedmetadata", (_event) => {
+	        this.audioDuration = parseInt(audioElement.duration);
+	        console.log("in" + this.audioDuration);
+	    });
+
+      audioElement.onloadedmetadata = () => {
+      this.audioDuration = parseInt(audioElement.duration); //时长为秒，取整
+      console.log("in11111111 :" + this.audioDuration);
+	};
+  // const main = async()=>{
+      //   await sleep(2000);
+      //   console.log("222222 out" + this.audioDuration);
+      // // };
+
+      // // main();
+      // // await sleep(2000);
+      console.log("22222 out" + this.audioDuration);
+      //  await sleep(1000);
+      // console.log("out" + this.audioDuration);
+	},
+
     handleBefore(file) {
+      this.getTimes(file); //
       // debugger
       // this.pdfData.courseId = 1;
       // this.courseId = 5;
@@ -192,6 +232,7 @@ export default {
     handleChange(value) {
     //   debugger
     this.courseId = value[value.length-1];
+
     this.selectedItem = value[value.length-1];
 
       console.log("i=", value[value.length-1]);
@@ -215,7 +256,7 @@ export default {
     const cropper = ref(null);
 
     const setImage = (e) => {
-      const file = e.target.files[0];
+    const file = e.target.files[0];
       if (!file.type.includes("image/")) {
         return;
       }

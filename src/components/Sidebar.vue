@@ -41,7 +41,12 @@ export default {
             {
                 icon: "el-icon-lx-home",
                 index: "/dashboard",
-                title: "系统首页123",
+                title: "系统首页",
+            },
+            {
+                icon: "el-icon-lx-copy",
+                        index: "/upload",
+                        title: "文件上传",
             },
             {
                 icon: "el-icon-lx-cascades",
@@ -51,7 +56,7 @@ export default {
             {
                 icon: "el-icon-lx-copy",
                 index: "/tabs",
-                title: "tab选项卡",
+                title: "消息处理",
             },
             {
                 icon: "el-icon-lx-calendar",
@@ -62,10 +67,7 @@ export default {
                         index: "/form",
                         title: "基本表单",
                     },
-                    {
-                        index: "/upload",
-                        title: "文件上传",
-                    },
+                    
                     {
                         index: "4",
                         title: "三级菜单",

@@ -20,6 +20,19 @@
                 <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div> -->
+     
+      <div class="block">
+      <span class="demonstration">选择课程:</span>
+      <el-cascader
+        style="margin: 20px"
+        expand-trigger="hover"
+        v-model="value"
+        :options="options"
+        @change="handleChange"
+      >
+      </el-cascader>
+    </div>
+
       <el-table
         :data="tableData"
         border
@@ -118,9 +131,20 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../api/index";
-
+import { getAllCourseIds } from "../api/index";
 export default {
   name: "basetable",
+    data() {
+       return {
+         options:[]
+       }
+    },
+    mounted() {
+    getAllCourseIds().then((res) => {
+        this.options = res;
+        console.log(res);
+    });
+  }, 
   setup() {
     const query = reactive({
       address: "",
