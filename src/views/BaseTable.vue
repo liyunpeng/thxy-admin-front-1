@@ -40,15 +40,15 @@
         ref="multipleTable"
         header-cell-class-name="table-header"
       >
-        <el-table-column
+        <!-- <el-table-column
           prop="id"
           label="ID"
           width="55"
           align="center"
-        ></el-table-column>
+        ></el-table-column> -->
+        <el-table-column prop="number" width="55" label="序号"></el-table-column>
         <el-table-column prop="mp3_file_name" label="文件名"></el-table-column>
-        <el-table-column prop="name" label="文件格式"></el-table-column>
-        <el-table-column prop="number" label="文件编号"></el-table-column>
+        <!-- <el-table-column prop="name" label="文件格式"></el-table-column> -->
         <el-table-column prop="duration" label="时长"></el-table-column>
         <el-table-column prop="gmt_create" label="上传时间"></el-table-column>
         
