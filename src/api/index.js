@@ -1,5 +1,5 @@
 import request from '../utils/request';
-
+import fetch from './fetch'
 
 // const baseUrl = 
 export const fetchData = query => {
@@ -18,10 +18,26 @@ export const getAllCourseIds = query => {
     });
 };
 
-export const getCourseFileByCourseId = query => {
-    return request({
-        url: './api/findCourseFileByCourseId',
+// export const getCourseFileByCourseId = query => {
+//     return request({
+//         url: './api/findCourseFileByCourseId',
+//         method: 'post',
+//         params: query
+//     });
+// };
+
+// export const getCourseFileByCourseId = query => {
+//     return request({
+//         url: './api/findCourseFileByCourseId',
+//         method: 'post',
+//         params: query
+//     });
+// };
+
+export function getCourseFileByCourseId(data) {
+    return fetch({
+        url: "/api/findCourseFileByCourseId",
         method: 'post',
-        params: query
-    });
-};
+        data
+    })
+}
