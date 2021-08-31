@@ -46,37 +46,12 @@
           width="55"
           align="center"
         ></el-table-column>
-        <el-table-column prop="name" label="用户名"></el-table-column>
-        <el-table-column label="账户余额">
-          <template #default="scope">￥{{ scope.row.money }}</template>
-        </el-table-column>
-        <el-table-column label="头像(查看大图)" align="center">
-          <template #default="scope">
-            <el-image
-              class="table-td-thumb"
-              :src="scope.row.thumb"
-              :preview-src-list="[scope.row.thumb]"
-            >
-            </el-image>
-          </template>
-        </el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column label="状态" align="center">
-          <template #default="scope">
-            <el-tag
-              :type="
-                scope.row.state === '成功'
-                  ? 'success'
-                  : scope.row.state === '失败'
-                  ? 'danger'
-                  : ''
-              "
-              >{{ scope.row.state }}</el-tag
-            >
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="date" label="注册时间"></el-table-column>
+        <el-table-column prop="mp3_file_name" label="文件名"></el-table-column>
+        <el-table-column prop="name" label="文件格式"></el-table-column>
+        <el-table-column prop="number" label="文件编号"></el-table-column>
+        <el-table-column prop="duration" label="时长"></el-table-column>
+        <el-table-column prop="gmt_create" label="上传时间"></el-table-column>
+        
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
             <el-button
@@ -132,10 +107,12 @@ import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../api/index";
 import { getAllCourseIds } from "../api/index";
+import { getCourseFileByCourseId } from "../api/index";
 export default {
   name: "basetable",
     data() {
        return {
+         tableData: [],
          options:[]
        }
     },
@@ -145,6 +122,19 @@ export default {
         console.log(res);
     });
   }, 
+  methods: {
+      handleChange() {
+        getCourseFileByCourseId({id: 1}).then((res) => {
+          debugger;
+          // this.selectedItem = res;
+
+          this.tableData = res;
+          console.log(res);
+          // tableData.value = res.list;
+          // pageTotal.value = res.pageTotal || 50;
+        });
+      }
+  },
   setup() {
     const query = reactive({
       address: "",
@@ -161,6 +151,17 @@ export default {
         pageTotal.value = res.pageTotal || 50;
       });
     };
+
+
+    //   getCourseFileByCourseId(1).then((res) => {
+    //     tableData.name=res.list;
+    //     // this.selectedItem = res;
+    //     // this.options = res;
+    //     // console.log(res);
+    //     // tableData.value = res.list;
+    //     // pageTotal.value = res.pageTotal || 50;
+    //     });
+    // };
     getData();
 
     // 查询操作
@@ -222,7 +223,7 @@ export default {
       saveEdit,
     };
   },
-};
+}
 </script>
 
 <style scoped>

@@ -17,3 +17,11 @@ export const getAllCourseIds = query => {
         params: query
     });
 };
+
+export const getCourseFileByCourseId = query => {
+    return request({
+        url: './api/findCourseFileByCourseId',
+        method: 'post',
+        params: query
+    });
+};
