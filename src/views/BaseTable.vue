@@ -119,17 +119,17 @@ export default {
     mounted() {
     getAllCourseIds().then((res) => {
         this.options = res;
-        console.log(res);
+        // console.log(res);
     });
   }, 
   methods: {
       handleChange() {
         getCourseFileByCourseId({id: 1}).then((res) => {
-          debugger;
+          // debugger;
           // this.selectedItem = res;
 
           this.tableData = res;
-          console.log(res);
+          // console.log(res);
           // tableData.value = res.list;
           // pageTotal.value = res.pageTotal || 50;
         });
