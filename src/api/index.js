@@ -36,7 +36,16 @@ export const getAllCourseIds = query => {
 
 export function getCourseFileByCourseId(data) {
     return fetch({
-        url: "/api/findCourseFileByCourseId",
+        url: "./api/findCourseFileByCourseId",
+        method: 'post',
+        data
+    })
+}
+
+
+export function adminLogin(data) {
+    return fetch({
+        url: "./api/adminLogin",
         method: 'post',
         data
     })

@@ -32,7 +32,7 @@ import { ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-
+import { adminLogin } from "../api/index";
 export default {
     setup() {
         const router = useRouter();
@@ -55,16 +55,44 @@ export default {
         };
         const login = ref(null);
         const submitForm = () => {
-            login.value.validate((valid) => {
-                if (valid) {
+            // debugger
+
+            /*
+            	Account string `json:"account"`
+	            Pwd     string `json:"pwd"`
+            */
+            // debugger
+            adminLogin({account: param.username, pwd: param.password}).then((res) => {
+                debugger
+                // this.selectedItem = res;
+
+                console.log(" u " + param.username + ", p=" + param.password);
+                // this.tableData = res;
+                // console.log(res);
+                // tableData.value = res.list;
+                // pageTotal.value = res.pageTotal || 50;
+                if (res.code == 3 && res.error == null) {
                     ElMessage.success("登录成功");
                     localStorage.setItem("ms_username", param.username);
-                    router.push("/");
+                    router.push("/dashboard");
+                } else  if (res.code == 5 ) {
+                    ElMessage.warning("登录失败");
                 } else {
-                    ElMessage.error("登录成功");
+                    ElMessage.error("未注册");
                     return false;
                 }
             });
+
+            // login.value.validate((valid) => {
+            //     if (valid) {
+            //         ElMessage.success("登录成功");
+            //         localStorage.setItem("ms_username", param.username);
+            //         router.push("/dashboard");
+            //     } else {
+            //         ElMessage.error("登录失败");
+            //         return false;
+            //     }
+            // });
         };
 
         const store = useStore();
