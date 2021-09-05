@@ -55,7 +55,7 @@ export default {
             },
             {
                 icon: "el-icon-lx-cascades",
-                index: "/table",
+                index: "/fileManager",
                 title: "文件管理",
             },
             {

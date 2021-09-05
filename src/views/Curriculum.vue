@@ -218,10 +218,10 @@ export default {
       }
       this.$refs['form2'].validate((valid) => {
         if (valid) {
-          if (this.selected !== null) {
-            const index = this.selected.row_index
-            this.$set(this.submitData.studentTableData[index], 'showFormDom', false)
-          }
+        //   if (this.selected !== null) {
+        //     const index = this.selected.row_index
+        //     this.$set(this.submitData.studentTableData[index], 'showFormDom', false)
+        //   }
           this.submitData.studentTableData.push(list)
           this.selected = list
           this.selected.row_index = this.submitData.studentTableData.length - 1

@@ -109,7 +109,7 @@ import { fetchData } from "../api/index";
 import { getAllCourseIds } from "../api/index";
 import { getCourseFileByCourseId } from "../api/index";
 export default {
-  name: "basetable",
+  name: "fileManager",
     data() {
        return {
          tableData: [],
