@@ -28,7 +28,7 @@ const routes = [
                 path: "/curriculum",
                 name: "Curriculum",
                 meta: {
-                    title: '课程设置1'
+                    title: '课程设置'
                 },
                 component: () => import ( /* webpackChunkName: "Curriculum" */ "../views/Curriculum.vue")
             }, {
