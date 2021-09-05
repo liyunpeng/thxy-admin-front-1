@@ -25,6 +25,13 @@ const routes = [
                 },
                 component: () => import ( /* webpackChunkName: "table" */ "../views/BaseTable.vue")
             }, {
+                path: "/curriculum",
+                name: "Curriculum",
+                meta: {
+                    title: '课程设置1'
+                },
+                component: () => import ( /* webpackChunkName: "Curriculum" */ "../views/Curriculum.vue")
+            }, {
                 path: "/charts",
                 name: "basecharts",
                 meta: {

@@ -45,6 +45,11 @@ export default {
             },
             {
                 icon: "el-icon-lx-copy",
+                index: "/curriculum",
+                title: "课程设置",
+            },
+            {
+                icon: "el-icon-lx-copy",
                         index: "/upload",
                         title: "文件上传",
             },
