@@ -43,6 +43,17 @@ export function findCourseByTypeId(data) {
 }
 
 
+export function getCourseTypes(data) {
+    return fetch({
+        url: "./api/getCourseTypes",
+        method: 'post',
+        data
+    })
+}
+
+
+
+
 // export const getCourseFileByCourseId = query => {
 //     return request({
 //         url: './api/findCourseFileByCourseId',

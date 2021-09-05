@@ -7,7 +7,7 @@
         </div>
         <div class="container">
             <el-tabs v-model="message">
-                <el-tab-pane :label="`课程管理(${state.unread.length})`" name="first"> 
+                <el-tab-pane :label="`课程管理`" name="first"> 
                 <div class="block">
       <span class="demonstration">选择课程类型:</span>
       <el-cascader
@@ -55,48 +55,72 @@
             >
           </template>
         </el-table-column>
+
+
+   
+      </el-table>
+           <el-row>
+    <el-upload
+        webki
+        webkitdirectory="true"
+        class="upload-demo"
+        :before-upload="handleBefore"
+        drag
+        action="http://localhost:8082/api/multiUpload"
+        multiple
+        :data="{courseId: courseId, duration: audioDuration}"
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <template #tip>
+          <div class="el-upload__tip">请上传文件的tip</div>
+        </template>
+      </el-upload>
+        </el-row>
+
+
+                </el-tab-pane>
+                <el-tab-pane :label="`课程类型`" name="second">
+                      <el-table
+        :data="typeData"
+        border
+        class="table"
+        ref="multipleTable"
+        header-cell-class-name="table-header"
+      >
+  
+        <el-table-column prop="id" width="55" label="id"></el-table-column>
+        <el-table-column prop="name" label="类型名"></el-table-column>
+        <!-- <el-table-column prop="name" label="文件格式"></el-table-column> -->
+        <el-table-column prop="img_src" label="图片"></el-table-column>
+        <el-table-column prop="gmt_create" label="创建时间"></el-table-column>
+        
+        <el-table-column label="操作" width="180" align="center">
+          <template #default="scope">
+            <el-button
+              type="text"
+              icon="el-icon-edit"
+              @click="handleEdit(scope.$index, scope.row)"
+              >编辑
+            </el-button>
+            <el-button
+              type="text"
+              icon="el-icon-delete"
+              class="red"
+              @click="handleDelete(scope.$index, scope.row)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+
+
+   
       </el-table>
                 </el-tab-pane>
-                <el-tab-pane :label="`课程类型(${state.read.length})`" name="second">
-                    <template v-if="message === 'second'">
-                        <el-table :data="state.read" :show-header="false" style="width: 100%">
-                            <el-table-column>
-                                <template #default="scope">
-                                    <span class="message-title">{{scope.row.title}}</span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="date" width="150"></el-table-column>
-                            <el-table-column width="120">
-                                <template #default="scope">
-                                    <el-button type="danger" @click="handleDel(scope.$index)">删除</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <div class="handle-row">
-                            <el-button type="danger">删除全部</el-button>
-                        </div>
-                    </template>
-                </el-tab-pane>
-                <el-tab-pane :label="`回收站(${state.recycle.length})`" name="third">
-                    <template v-if="message === 'third'">
-                        <el-table :data="state.recycle" :show-header="false" style="width: 100%">
-                            <el-table-column>
-                                <template #default="scope">
-                                    <span class="message-title">{{scope.row.title}}</span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="date" width="150"></el-table-column>
-                            <el-table-column width="120">
-                                <template #default="scope">
-                                    <el-button @click="handleRestore(scope.$index)">还原</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <div class="handle-row">
-                            <el-button type="danger">清空回收站</el-button>
-                        </div>
-                    </template>
-                </el-tab-pane>
+                
             </el-tabs>
         </div>
     </div>
@@ -106,14 +130,15 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../api/index";
-import { getAllCourseType, findCourseByTypeId } from "../api/index";
+import { getAllCourseType, getCourseTypes, findCourseByTypeId } from "../api/index";
 
 export default {
     name: "Curriculum",
     data() {
        return {
          tableData: [],
-         options:[]
+         options:[],
+         typeData:[]
        }
     },
 
@@ -121,6 +146,11 @@ export default {
         getAllCourseType().then((res) => {
             // debugger;
             this.options = res;
+            // console.log(res);
+    });
+     getCourseTypes().then((res) => {
+            // debugger;
+            this.typeData = res;
             // console.log(res);
     });
   }, 
