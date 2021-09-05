@@ -32,11 +32,11 @@
           width="55"
           align="center"
         ></el-table-column> -->
-        <el-table-column prop="number" width="55" label="序号"></el-table-column>
-        <el-table-column prop="mp3_file_name" label="文件名"></el-table-column>
+        <el-table-column prop="id" width="55" label="id"></el-table-column>
+        <el-table-column prop="title" label="课程名"></el-table-column>
         <!-- <el-table-column prop="name" label="文件格式"></el-table-column> -->
-        <el-table-column prop="duration" label="时长"></el-table-column>
-        <el-table-column prop="gmt_create" label="上传时间"></el-table-column>
+        <el-table-column prop="img_src" label="图片"></el-table-column>
+        <el-table-column prop="gmt_create" label="创建时间"></el-table-column>
         
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
@@ -106,26 +106,29 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../api/index";
-import { getCourseTypes } from "../api/index";
-import { getCourseFileByCourseId } from "../api/index";
+import { getAllCourseType, findCourseByTypeId } from "../api/index";
+
 export default {
     name: "Curriculum",
-   data() {
+    data() {
        return {
          tableData: [],
          options:[]
        }
     },
+
     mounted() {
-    getCourseTypes().then((res) => {
+        
+        getAllCourseType().then((res) => {
+        // debugger;
         this.options = res;
         // console.log(res);
     });
   }, 
   methods: {
       handleChange() {
-        getCourseFileByCourseId({id: 1}).then((res) => {
-          // debugger;
+        findCourseByTypeId({id: 1}).then((res) => {
+          debugger;
           // this.selectedItem = res;
 
           this.tableData = res;

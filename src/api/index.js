@@ -12,11 +12,28 @@ export const fetchData = query => {
 
 export const getAllCourseIds = query => {
     return request({
-        url: './api/getAllCourseIds',
+        url: './api/adminGetAllCourseIds',
         method: 'post',
         params: query
     });
 };
+
+export const getAllCourseType = query => {
+    return request({
+        url: './api/adminGetAllCourseType',
+        method: 'post',
+        params: query
+    });
+};
+
+export const findCourseByTypeId = query => {
+    return request({
+        url: './api/findCourseByTypeId',
+        method: 'post',
+        params: query
+    });
+};
+
 
 // export const getCourseFileByCourseId = query => {
 //     return request({
@@ -51,10 +68,10 @@ export function adminLogin(data) {
     })
 }
 
-export function getCourseTypes(data) {
-    return fetch({
-        url: "./api/getCourseTypes",
-        method: 'post',
-        data
-    })
-}
+// export function getCourseTypes(data) {
+//     return fetch({
+//         url: "./api/getCourseTypes",
+//         method: 'post',
+//         data
+//     })
+// }
