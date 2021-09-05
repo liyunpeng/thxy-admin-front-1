@@ -118,6 +118,7 @@ export default {
     },
     mounted() {
     getAllCourseIds().then((res) => {
+      // debugger;
         this.options = res;
         // console.log(res);
     });

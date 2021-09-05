@@ -50,3 +50,11 @@ export function adminLogin(data) {
         data
     })
 }
+
+export function getCourseTypes(data) {
+    return fetch({
+        url: "./api/getCourseTypes",
+        method: 'post',
+        data
+    })
+}
