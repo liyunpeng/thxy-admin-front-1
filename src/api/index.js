@@ -26,13 +26,21 @@ export const getAllCourseType = query => {
     });
 };
 
-export const findCourseByTypeId = query => {
-    return request({
-        url: './api/findCourseByTypeId',
+// export const findCourseByTypeId = query => {
+//     return fetch({
+//         url: "./api/findCourseByTypeId",
+//         method: 'post',
+//         data
+//     });
+// };
+
+export function findCourseByTypeId(data) {
+    return fetch({
+        url: "./api/findCourseByTypeId",
         method: 'post',
-        params: query
-    });
-};
+        data
+    })
+}
 
 
 // export const getCourseFileByCourseId = query => {

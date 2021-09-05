@@ -15,7 +15,7 @@
         expand-trigger="hover"
         v-model="value"
         :options="options"
-        @change="handleChange"
+        @change="handleChange(value)"
       >
       </el-cascader>
     </div>              
@@ -117,18 +117,18 @@ export default {
        }
     },
 
-    mounted() {
-        
+    mounted() {    
         getAllCourseType().then((res) => {
-        // debugger;
-        this.options = res;
-        // console.log(res);
+            // debugger;
+            this.options = res;
+            // console.log(res);
     });
   }, 
   methods: {
-      handleChange() {
-        findCourseByTypeId({id: 1}).then((res) => {
-          debugger;
+      handleChange( val ) {
+          console.log("val:" + val)
+        findCourseByTypeId({id: parseInt(val)}).then((res) => {
+        //   debugger;
           // this.selectedItem = res;
 
           this.tableData = res;
