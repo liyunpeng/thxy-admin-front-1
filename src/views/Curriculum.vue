@@ -19,78 +19,42 @@
       >
       </el-cascader>
     </div>
-      
-    <el-table
-        :data="tableData"
-        border
-        class="table"
-        ref="multipleTable"
-        header-cell-class-name="table-header"
-      >
-        <!-- <el-table-column
-          prop="id"
-          label="ID"
-          width="55"
-          align="center"
-        ></el-table-column> -->
-        <el-table-column prop="id" width="55" label="id"></el-table-column>
-        <!-- <el-table-column prop="title" label="课程名"/> -->
-        <el-table-column prop="title"  label="课程名">
-                
 
-        </el-table-column>
-        <!-- </el-table-column> -->
-
-
-        <!-- </el-table-column> -->
-        <!-- <el-table-column prop="name" label="文件格式"></el-table-column> -->
-        <el-table-column prop="img_src" label="图片"></el-table-column>
-        <el-table-column prop="gmt_create" label="创建时间"></el-table-column>
-        
-        <el-table-column label="操作" width="180" align="center">
-          <template #default="scope">
-            <el-button
-              type="text"
-              icon="el-icon-edit"
-              @click="handleEdit(scope.$index, scope.row)"
-              >编辑
-            </el-button>
-            <el-button
-              type="text"
-              icon="el-icon-delete"
-              class="red"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-
-         <el-table :data="tableDataT" class="tb-edit" style="width: 100%" highlight-current-row @row-click="handleCurrentChange">
-            <el-table-column label="日期" width="180">
+        <el-table :data="tableData" class="tb-edit" style="width: 100%" highlight-current-row @row-click="handleCurrentChange">
+            <el-table-column label="id" >
                 <template #default="scope">
-                    <el-input size="small"  v-model="scope.row.date" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                    <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.id" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                    <span v-else>{{ scope.row.id }}</span>
                 </template>
             </el-table-column>
-           <el-table-column label="姓名" width="180">
+           <el-table-column label="课程名" >
                 <template #default="scope">
-                    <el-input size="small" v-model="scope.row.name" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                    <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.title" placeholder="课程名" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                    <span v-else>{{ scope.row.title }}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="address" label="地址">
+            <el-table-column  label="图片">
                 <template #default="scope">
-                    <el-input size="small" v-model="scope.row.address" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                    <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.img_src" placeholder="图片" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                    <span v-else>{{ scope.row.img_src }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column  label="创建时间">
+                <template #default="scope">
+                    <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.gmt_create" placeholder="创建时间" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                     <span v-else>{{ scope.row.gmt_create }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作">
                 <template #default="scope">
-                    <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
-                    <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button  type="text"  @click="pwdChange(scope.row, scope.$index,  true)">
+                        {{scope.row.isSet?'保存':"修改"}}
+                        </el-button>
+                    <el-button  type="text" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button  type="text"  @click="handleCancel(scope.$index, scope.row)">取消</el-button>
                 </template>
             </el-table-column>
         </el-table>
-
-
     <el-row>
     <el-upload
         webki
@@ -114,9 +78,9 @@
         </el-row>
 
 
-                </el-tab-pane>
-                <el-tab-pane :label="`课程类型`" name="second">
-                      <el-table
+        </el-tab-pane>
+      <el-tab-pane :label="`课程类型`" name="second">
+    <el-table
         :data="typeData"
         border
         class="table"
@@ -148,8 +112,6 @@
           </template>
         </el-table-column>
 
-
-   
       </el-table>
                 </el-tab-pane>
                 
@@ -170,25 +132,6 @@ export default {
     name: "Curriculum",
     data() {
        return {
-    
-            tableDataT: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
-        
            members:[],
            name:"",
          tableData: [],
@@ -212,18 +155,112 @@ export default {
     });
   }, 
   methods: {
+      //修改
+                pwdChange(row, index, cg) {
+                    // debugger;
+                    for (const i of this.tableData) {
+                      if (i.isSet && i.id != row.id ) return this.$message.warning('请先保存当前编辑项')
+                    }
+
+                    // //点击修改 判断是否已经保存所有操作
+                    // for (let i of app.master_user.data) {
+                    //     if (i.isSet && i.id != row.id) {
+                    //         app.$message.warning("请先保存当前编辑项");
+                    //         return false;
+                    //     }
+                    // }
+                    //是否是取消操作
+                    if (!cg) {
+                        if (!app.master_user.sel.id) app.master_user.data.splice(index, 1);
+                        return row.isSet = !row.isSet;
+                    }
+                    //提交数据
+                    if (row.isSet) {
+                        //项目是模拟请求操作  自己修改下
+                        (function () {
+                            // let data = JSON.parse(JSON.stringify(app.master_user.sel));
+                            // for (let k in data) row[k] = data[k];
+                            // app.$message({
+                            //     type: 'success',
+                            //     message: "保存成功!"
+                            // });
+                            // //然后这边重新读取表格数据
+                            // app.readMasterUser();
+                            row.isSet = false;
+                        })();
+                    } else {
+                        // app.master_user.sel = JSON.parse(JSON.stringify(row));
+                        row.isSet = true;
+                        row.edit = true;
+                        
+                    }
+                },
+
       handleCurrentChange(row, event, column) {
                 console.log(row, event, column, event.currentTarget)
         },
-            handleEdit(index, row) {
-                console.log(index, row);
-            },
+           
             handleDelete(index, row) {
                 console.log(index, row);
             },
 
+
+    // 编辑
+    // handleEdit(index, row) {
+    //   for (const i of this.tableData) {
+    //     if (i.isSet) return this.$message.warning('请先保存当前编辑项')
+    //   }
+    //   row.edit = true
+    //   row.isSet = true
+    // },
+    // 取消
+    handleCancel(row) {
+      row.edit = false;
+      row.isSet = false;
+    //   this.getSystemConfigList()
+        findCourseByTypeId({id: 2}).then((res) => {
+        //   debugger;
+          // this.selectedItem = res;
+
+          this.tableData = res;
+
+
+        //   this.tableData.push({"title":"aa", "img_src":"cc"});
+          // console.log(res);
+          // tableData.value = res.list;
+          // pageTotal.value = res.pageTotal || 50;
+        });
+    },
+      handleDelete(index, row) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        deleteConfig(row.id)
+        this.data.splice(index, 1)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 添加
+    handleAdd() {
+      for (const i of this.data) {
+        if (i.isSet) return this.$message.warning('请先保存当前编辑项')
+      }
+      const j = { 'key': '', 'type': '', 'value': '', 'desc': '', 'isSet': true, 'edit': true }
+      this.data.push(j)
+    },
       handleChange( val ) {
-          console.log("val:" + val)
+        console.log("val:" + val)
         findCourseByTypeId({id: parseInt(val)}).then((res) => {
         //   debugger;
           // this.selectedItem = res;
@@ -231,7 +268,7 @@ export default {
           this.tableData = res;
 
 
-          this.tableData.push({"title":"aa", "img_src":"cc"});
+        //   this.tableData.push({"title":"aa", "img_src":"cc"});
           // console.log(res);
           // tableData.value = res.list;
           // pageTotal.value = res.pageTotal || 50;
