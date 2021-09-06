@@ -48,7 +48,7 @@
             </el-table-column>
             <el-table-column label="操作">
               <template #default="scope">
-                <el-button type="text" @click="pwdChange(scope.row, scope.$index,  true)">
+                <el-button type="text" @click="handleEdit(scope.row, scope.$index,  true, this.tableData)">
                   {{ scope.row.isSet ? '保存' : "修改" }}
                 </el-button>
                 <el-button type="text" @click="handleDelete(scope.row, scope.$index)">删除</el-button>
@@ -114,7 +114,7 @@
 
             <el-table-column label="操作">
               <template #default="scope">
-                <el-button type="text" @click="pwdChange(scope.row, scope.$index,  true)">
+                <el-button type="text" @click="handleEdit(scope.row, scope.$index,  true, this.typeData)">
                   {{ scope.row.isSet ? '保存' : "修改" }}
                 </el-button>
                 <el-button type="text" @click="handleDelete(scope.row, scope.$index)">删除</el-button>
@@ -162,9 +162,9 @@ export default {
   },
 
   methods: {
-    pwdChange(row, index, cg) {
+    handleEdit(row, index, cg, data) {
       // debugger;
-      for (const i of this.tableData) {
+      for (const i of data) {
         if (i.isSet && i.id != row.id) return this.$message.warning('请先保存当前编辑项')
       }
 
@@ -236,7 +236,6 @@ export default {
       })
     },
 
-    // 添加
     handleAdd() {
       for (const i of this.tableData) {
         if (i.isSet) return this.$message.warning('请先保存当前编辑项')
