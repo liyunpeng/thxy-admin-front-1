@@ -18,8 +18,9 @@
         @change="handleChange(value)"
       >
       </el-cascader>
-    </div>              
-  <el-table
+    </div>
+      
+    <el-table
         :data="tableData"
         border
         class="table"
@@ -33,7 +34,15 @@
           align="center"
         ></el-table-column> -->
         <el-table-column prop="id" width="55" label="id"></el-table-column>
-        <el-table-column prop="title" label="课程名"></el-table-column>
+        <!-- <el-table-column prop="title" label="课程名"/> -->
+        <el-table-column prop="title"  label="课程名">
+                
+
+        </el-table-column>
+        <!-- </el-table-column> -->
+
+
+        <!-- </el-table-column> -->
         <!-- <el-table-column prop="name" label="文件格式"></el-table-column> -->
         <el-table-column prop="img_src" label="图片"></el-table-column>
         <el-table-column prop="gmt_create" label="创建时间"></el-table-column>
@@ -55,11 +64,34 @@
             >
           </template>
         </el-table-column>
-
-
-   
       </el-table>
-           <el-row>
+
+         <el-table :data="tableDataT" class="tb-edit" style="width: 100%" highlight-current-row @row-click="handleCurrentChange">
+            <el-table-column label="日期" width="180">
+                <template #default="scope">
+                    <el-input size="small"  v-model="scope.row.date" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                </template>
+            </el-table-column>
+           <el-table-column label="姓名" width="180">
+                <template #default="scope">
+                    <el-input size="small" v-model="scope.row.name" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                </template>
+            </el-table-column>
+            <el-table-column prop="address" label="地址">
+                <template #default="scope">
+                    <el-input size="small" v-model="scope.row.address" placeholder="请输入内容" @change="handleEdit(scope.$index, scope.row)"></el-input> 
+                </template>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template #default="scope">
+                    <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+                    <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+
+    <el-row>
     <el-upload
         webki
         webkitdirectory="true"
@@ -126,7 +158,9 @@
     </div>
 </template>
 
+
 <script>
+
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { fetchData } from "../api/index";
@@ -136,6 +170,27 @@ export default {
     name: "Curriculum",
     data() {
        return {
+    
+            tableDataT: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1517 弄'
+            }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1519 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }],
+        
+           members:[],
+           name:"",
          tableData: [],
          options:[],
          typeData:[]
@@ -146,6 +201,8 @@ export default {
         getAllCourseType().then((res) => {
             // debugger;
             this.options = res;
+
+
             // console.log(res);
     });
      getCourseTypes().then((res) => {
@@ -155,6 +212,16 @@ export default {
     });
   }, 
   methods: {
+      handleCurrentChange(row, event, column) {
+                console.log(row, event, column, event.currentTarget)
+        },
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+
       handleChange( val ) {
           console.log("val:" + val)
         findCourseByTypeId({id: parseInt(val)}).then((res) => {
@@ -162,6 +229,9 @@ export default {
           // this.selectedItem = res;
 
           this.tableData = res;
+
+
+          this.tableData.push({"title":"aa", "img_src":"cc"});
           // console.log(res);
           // tableData.value = res.list;
           // pageTotal.value = res.pageTotal || 50;
