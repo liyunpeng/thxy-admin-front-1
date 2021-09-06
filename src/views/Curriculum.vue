@@ -20,7 +20,7 @@
             </el-cascader>
           </div>
 
-          <el-table :data="tableData" class="tb-edit" style="width: 100%" highlight-current-row
+          <el-table :data="tableData" border   style="width: 100%" highlight-current-row
                     @row-click="handleCurrentChange">
             <el-table-column label="id">
               <template #default="scope">
@@ -56,6 +56,9 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="el-table-add-row" @click="handleAdd()">
+            <span> 添加课程</span>
+          </div>
           <el-row>
             <el-upload
                 webki
@@ -86,30 +89,43 @@
               ref="multipleTable"
               header-cell-class-name="table-header"
           >
-            <el-table-column prop="id" width="55" label="id"></el-table-column>
-            <el-table-column prop="name" label="类型名"></el-table-column>
-            <el-table-column prop="img_src" label="图片"></el-table-column>
-            <el-table-column prop="gmt_create" label="创建时间"></el-table-column>
-            <el-table-column label="操作" width="180" align="center">
+            <el-table-column width="55" label="id">
               <template #default="scope">
-                <el-button
-                    type="text"
-                    icon="el-icon-edit"
-                    @click="handleEdit(scope.$index, scope.row)"
-                >编辑
+                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.id" placeholder="id"/>
+                <span v-else>{{ scope.row.id }}</span>
+              </template>
+
+            </el-table-column>
+            <el-table-column  label="类型名">
+              <template #default="scope">
+                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.name" placeholder="请输入内容"/>
+                <span v-else>{{ scope.row.name }}</span>
+              </template>
+
+            </el-table-column>
+
+            <el-table-column  label="创建时间">
+              <template #default="scope">
+                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.gmt_create" placeholder="请输入内容"/>
+                <span v-else>{{ scope.row.gmt_create }}</span>
+              </template>
+
+            </el-table-column>
+
+            <el-table-column label="操作">
+              <template #default="scope">
+                <el-button type="text" @click="pwdChange(scope.row, scope.$index,  true)">
+                  {{ scope.row.isSet ? '保存' : "修改" }}
                 </el-button>
-                <el-button
-                    type="text"
-                    icon="el-icon-delete"
-                    class="red"
-                    @click="handleDelete( scope.row, scope.$index)"
-                >删除
-                </el-button
-                >
+                <el-button type="text" @click="handleDelete(scope.row, scope.$index)">删除</el-button>
+                <el-button type="text" @click="handleCancel(scope.row, scope.$index)">取消</el-button>
               </template>
             </el-table-column>
 
           </el-table>
+          <div class="el-table-add-row" @click="handleAddType()">
+            <span> 添加类型</span>
+          </div>
         </el-tab-pane>
 
       </el-tabs>
@@ -222,11 +238,21 @@ export default {
 
     // 添加
     handleAdd() {
-      for (const i of this.data) {
+      for (const i of this.tableData) {
         if (i.isSet) return this.$message.warning('请先保存当前编辑项')
       }
-      const j = {'key': '', 'type': '', 'value': '', 'desc': '', 'isSet': true, 'edit': true}
-      this.data.push(j)
+
+      const j = {'id': '', 'title': '', 'img_src': '', 'gmt_create': '', 'isSet': true, 'edit': true}
+      this.tableData.push(j)
+    },
+
+    handleAddType() {
+      for (const i of this.typeData) {
+        if (i.isSet) return this.$message.warning('请先保存当前编辑项')
+      }
+
+      const j = {'id': '', 'name': '', 'gmt_create': '', 'isSet': true, 'edit': true}
+      this.typeData.push(j)
     },
     handleChange(val) {
       console.log("val:" + val)
@@ -264,6 +290,15 @@ export default {
 </script>
 
 <style>
+.el-table-add-row{
+  border: 1px dashed #0f6ab4;
+  width: 100%;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
 .message-title {
   cursor: pointer;
 }
