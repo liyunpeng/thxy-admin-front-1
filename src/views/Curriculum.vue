@@ -50,8 +50,8 @@
                     <el-button  type="text"  @click="pwdChange(scope.row, scope.$index,  true)">
                         {{scope.row.isSet?'保存':"修改"}}
                         </el-button>
-                    <el-button  type="text" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    <el-button  type="text"  @click="handleCancel(scope.$index, scope.row)">取消</el-button>
+                    <el-button  type="text"  @click="handleDelete(scope.row, scope.$index)">删除</el-button>
+                    <el-button  type="text"  @click="handleCancel(scope.row, scope.$index)">取消</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -134,6 +134,7 @@ export default {
        return {
            members:[],
            name:"",
+        optionSelected : 0, 
          tableData: [],
          options:[],
          typeData:[]
@@ -154,6 +155,7 @@ export default {
             // console.log(res);
     });
   }, 
+  
   methods: {
       //修改
                 pwdChange(row, index, cg) {
@@ -214,21 +216,14 @@ export default {
     //   row.isSet = true
     // },
     // 取消
-    handleCancel(row) {
+    handleCancel(row, index) {
       row.edit = false;
       row.isSet = false;
     //   this.getSystemConfigList()
-        findCourseByTypeId({id: 2}).then((res) => {
+     // 刷新数据， 已经编辑的不会显示到刷新后的列表
+      findCourseByTypeId({id: this.optionSelected}).then((res) => {
         //   debugger;
-          // this.selectedItem = res;
-
           this.tableData = res;
-
-
-        //   this.tableData.push({"title":"aa", "img_src":"cc"});
-          // console.log(res);
-          // tableData.value = res.list;
-          // pageTotal.value = res.pageTotal || 50;
         });
     },
       handleDelete(index, row) {
@@ -261,7 +256,8 @@ export default {
     },
       handleChange( val ) {
         console.log("val:" + val)
-        findCourseByTypeId({id: parseInt(val)}).then((res) => {
+        this.optionSelected = parseInt(val);
+        findCourseByTypeId({id: this.optionSelected }).then((res) => {
         //   debugger;
           // this.selectedItem = res;
 
