@@ -277,7 +277,7 @@ export default {
     }
   },
   setup() {
-    // const message = ref("first");
+    const message = ref("first");
     // // const handleRead = (index) => {
     // //   const item = state.unread.splice(index, 1);
     // //   console.log(item);
@@ -292,13 +292,13 @@ export default {
     // //   state.read = item.concat(state.read);
     // // };
     //
-    // return {
-    //   message,
+    return {
+      message,
     //   // state,
     //   // handleRead,
     //   // handleDel,
     //   // handleRestore,
-    // };
+    };
   },
 };
 </script>
