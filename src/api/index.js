@@ -67,6 +67,23 @@ export function updateCourseType(data) {
     })
 }
 
+export function addCourse(data) {
+    return fetch({
+        url: "./api/addCourse",
+        method: 'post',
+        data
+    })
+}
+
+export function updateCourse(data) {
+    return fetch({
+        url: "./api/updateCourse",
+        method: 'post',
+        data
+    })
+}
+
+
 
 // export const getCourseFileByCourseId = query => {
 //     return request({

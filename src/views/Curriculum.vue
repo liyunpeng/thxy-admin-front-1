@@ -101,7 +101,7 @@
             </el-table-column>
             <el-table-column label="类型名">
               <template #default="scope">
-                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.name" placeholder="请输入内容"/>
+                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.name" placeholder="类型名"/>
                 <span v-else>{{ scope.row.name }}</span>
               </template>
 
@@ -140,12 +140,13 @@
 <script>
 
 import {ref, reactive} from "vue";
-import {getAllCourseType, getCourseTypes, findCourseByTypeId, addCourseType, updateCourseType} from "../api/index";
+import {getAllCourseType, getCourseTypes, findCourseByTypeId, addCourseType, updateCourseType, updateCourse, addCourse} from "../api/index";
 
 export default {
   name: "Curriculum",
   data() {
     return {
+      message: "first",
       members: [],
       name: "",
       optionSelected: 0,
@@ -185,36 +186,54 @@ export default {
         return row.isSet = !row.isSet;
       }
 
+
       if (row.isSet) {
-        (function () {
+
+
+        (function ( mes, typeId ) {
           // let data = JSON.parse(JSON.stringify(app.master_user.sel));
           // for (let k in data) row[k] = data[k];
-          addCourseType({name: row.name}).then((res) => {
-            if (res.code == 3) {
-              app.$message({
-                type: 'success',
-                message: "保存成功!"
-              });
-            } else {
-              app.$message({
-                type: 'success',
-                message: "保存失败! res=" + res
-              });
-            }
-
-          });
+          console.log("mes = ", mes, " typeId=", typeId);
+          // debugger
+          if (mes == "first") {
+            addCourse({title: row.title, type_id: typeId}).then((res) => {
+              if (res.code == 3) {
+                app.$message({
+                  type: 'success',
+                  message: "保存成功!"
+                });
+              } else {
+                app.$message({
+                  type: 'success',
+                  message: "保存失败! res=" + res
+                });
+              }
+            });
+          } else if (mes == "second" ) {
+            addCourseType({name: row.name}).then((res) => {
+              if (res.code == 3) {
+                app.$message({
+                  type: 'success',
+                  message: "保存成功!"
+                });
+              } else {
+                app.$message({
+                  type: 'success',
+                  message: "保存失败! res=" + res
+                });
+              }
+            });
+          }
 
           // //然后这边重新读取表格数据
           // app.readMasterUser();
           row.isSet = false;
-        })();
+        })(this.message, this.optionSelected);
       } else {
         // app.master_user.sel = JSON.parse(JSON.stringify(row));
         row.isSet = true;
         row.edit = true;
       }
-
-
     },
 
     handleCurrentChange(row, event, column) {
@@ -277,7 +296,7 @@ export default {
     }
   },
   setup() {
-    const message = ref("first");
+    // let message = ref("first");
     // // const handleRead = (index) => {
     // //   const item = state.unread.splice(index, 1);
     // //   console.log(item);
@@ -292,13 +311,13 @@ export default {
     // //   state.read = item.concat(state.read);
     // // };
     //
-    return {
-      message,
+    // return {
+    //   message,
     //   // state,
     //   // handleRead,
     //   // handleDel,
     //   // handleRestore,
-    };
+    // };
   },
 };
 </script>
