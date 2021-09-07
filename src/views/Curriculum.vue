@@ -9,7 +9,7 @@
       <el-tabs v-model="message">
         <el-tab-pane :label="`课程管理`" name="first">
           <div class="block">
-            <span class="demonstration">选择课程类型:</span>
+            <span class="demonstration">课程类型:</span>
             <el-cascader
                 style="margin: 20px"
                 expand-trigger="hover"
@@ -20,7 +20,10 @@
             </el-cascader>
           </div>
 
-          <el-table :data="tableData" border   style="width: 100%" highlight-current-row
+          <el-table :data="tableData"
+                    border
+                    style="width: 100%"
+                    highlight-current-row
                     @row-click="handleCurrentChange">
             <el-table-column label="id">
               <template #default="scope">
@@ -96,7 +99,7 @@
               </template>
 
             </el-table-column>
-            <el-table-column  label="类型名">
+            <el-table-column label="类型名">
               <template #default="scope">
                 <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.name" placeholder="请输入内容"/>
                 <span v-else>{{ scope.row.name }}</span>
@@ -104,7 +107,7 @@
 
             </el-table-column>
 
-            <el-table-column  label="创建时间">
+            <el-table-column label="创建时间">
               <template #default="scope">
                 <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.gmt_create" placeholder="请输入内容"/>
                 <span v-else>{{ scope.row.gmt_create }}</span>
@@ -137,7 +140,7 @@
 <script>
 
 import {ref, reactive} from "vue";
-import {getAllCourseType, getCourseTypes, findCourseByTypeId} from "../api/index";
+import {getAllCourseType, getCourseTypes, findCourseByTypeId, addCourseType, updateCourseType} from "../api/index";
 
 export default {
   name: "Curriculum",
@@ -165,31 +168,42 @@ export default {
     handleEdit(row, index, cg, data) {
       // debugger;
       for (const i of data) {
-        if (i.isSet && i.id != row.id) return this.$message.warning('请先保存当前编辑项')
+        if (i.isSet && i.id != row.id)
+          return this.$message.warning('请先保存当前编辑项')
       }
 
-      // //点击修改 判断是否已经保存所有操作
-      // for (let i of app.master_user.data) {
-      //     if (i.isSet && i.id != row.id) {
-      //         app.$message.warning("请先保存当前编辑项");
-      //         return false;
-      //     }
-      // }
+      // 点击修改 判断是否已经保存所有操作
+      for (let i of data) {
+          if (i.isSet && i.id != row.id) {
+              app.$message.warning("请先保存当前编辑项123");
+              return false;
+          }
+      }
       //是否是取消操作
       if (!cg) {
         if (!app.master_user.sel.id) app.master_user.data.splice(index, 1);
         return row.isSet = !row.isSet;
       }
-      //提交数据
+
       if (row.isSet) {
-        //项目是模拟请求操作  自己修改下
         (function () {
           // let data = JSON.parse(JSON.stringify(app.master_user.sel));
           // for (let k in data) row[k] = data[k];
-          // app.$message({
-          //     type: 'success',
-          //     message: "保存成功!"
-          // });
+          addCourseType({name: row.name}).then((res) => {
+            if (res.code == 3) {
+              app.$message({
+                type: 'success',
+                message: "保存成功!"
+              });
+            } else {
+              app.$message({
+                type: 'success',
+                message: "保存失败! res=" + res
+              });
+            }
+
+          });
+
           // //然后这边重新读取表格数据
           // app.readMasterUser();
           row.isSet = false;
@@ -198,8 +212,9 @@ export default {
         // app.master_user.sel = JSON.parse(JSON.stringify(row));
         row.isSet = true;
         row.edit = true;
-
       }
+
+
     },
 
     handleCurrentChange(row, event, column) {
@@ -289,7 +304,7 @@ export default {
 </script>
 
 <style>
-.el-table-add-row{
+.el-table-add-row {
   border: 1px dashed #0f6ab4;
   width: 100%;
   line-height: 50px;

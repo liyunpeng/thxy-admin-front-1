@@ -1,7 +1,7 @@
 import request from '../utils/request';
 import fetch from './fetch'
 
-// const baseUrl = 
+// const baseUrl =
 export const fetchData = query => {
     return request({
         url: './table.json',
@@ -51,7 +51,21 @@ export function getCourseTypes(data) {
     })
 }
 
+export function addCourseType(data) {
+    return fetch({
+        url: "./api/addCourseType",
+        method: 'post',
+        data
+    })
+}
 
+export function updateCourseType(data) {
+    return fetch({
+        url: "./api/updateCourseType",
+        method: 'post',
+        data
+    })
+}
 
 
 // export const getCourseFileByCourseId = query => {
