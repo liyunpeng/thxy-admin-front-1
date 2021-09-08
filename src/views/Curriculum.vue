@@ -38,15 +38,17 @@
               </template>
             </el-table-column>
             <el-table-column label="图片">
-              <template #default="scope">
-                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.img_src" placeholder="图片"/>
-                <span v-else>{{ scope.row.img_src }}</span>
-              </template>
+              <!--              <template #default="scope">-->
+              <!--                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.img_src" placeholder="图片"/>-->
+              <!--                <span v-else>{{ scope.row.img_src }}</span>-->
+
+              <el-image src="http://localhost:8082/api/fileDownload?fileName=tihuxueyuan.png"></el-image>
+              <!--              </template>-->
             </el-table-column>
             <el-table-column label="创建时间">
               <template #default="scope">
                 <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.gmt_create" placeholder="创建时间"/>
-                <span v-else>{{ scope.row.gmt_create }}</span>
+                <span v-else>{{ myformatdate(scope.row.gmt_create) }}</span>
               </template>
             </el-table-column>
             <el-table-column label="操作">
@@ -110,7 +112,7 @@
             <el-table-column label="创建时间">
               <template #default="scope">
                 <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.gmt_create" placeholder="请输入内容"/>
-                <span v-else>{{ scope.row.gmt_create }}</span>
+                <span v-else>{{ myformatdate(scope.row.gmt_create) }}</span>
               </template>
 
             </el-table-column>
@@ -140,7 +142,17 @@
 <script>
 
 import {ref, reactive} from "vue";
-import {getAllCourseType, getCourseTypes, findCourseByTypeId, addCourseType, updateCourseType, updateCourse, addCourse} from "../api/index";
+import {
+  getAllCourseType,
+  getCourseTypes,
+  findCourseByTypeId,
+  addCourseType,
+  updateCourseType,
+  updateCourse,
+  addCourse,
+  deleteCourseType,
+  deleteCourse
+} from "../api/index";
 
 export default {
   name: "Curriculum",
@@ -166,19 +178,33 @@ export default {
   },
 
   methods: {
+
+    myformatdate(inputTime) {
+      if (!inputTime && typeof inputTime !== 'number') {
+        return '';
+      }
+      var localTime = '';
+      inputTime = new Date(inputTime).getTime();
+      const offset = (new Date()).getTimezoneOffset();
+      localTime = (new Date(inputTime - offset * 60000)).toISOString();
+      localTime = localTime.substr(0, localTime.lastIndexOf('.'));
+      localTime = localTime.replace('T', ' ');
+      return localTime;
+    },
+
     handleEdit(row, index, cg, data) {
       // debugger;
       for (const i of data) {
         if (i.isSet && i.id != row.id)
-          return this.$message.warning('请先保存当前编辑项')
+          return this.$prompt.warning('请先保存当前编辑项')
       }
 
       // 点击修改 判断是否已经保存所有操作
       for (let i of data) {
-          if (i.isSet && i.id != row.id) {
-              app.$message.warning("请先保存当前编辑项123");
-              return false;
-          }
+        if (i.isSet && i.id != row.id) {
+          app.$prompt.warning("请先保存当前编辑项123");
+          return false;
+        }
       }
       //是否是取消操作
       if (!cg) {
@@ -186,49 +212,90 @@ export default {
         return row.isSet = !row.isSet;
       }
 
-
       if (row.isSet) {
-
-
-        (function ( mes, typeId ) {
+        (function (mes, typeId, app) {
           // let data = JSON.parse(JSON.stringify(app.master_user.sel));
           // for (let k in data) row[k] = data[k];
           console.log("mes = ", mes, " typeId=", typeId);
           // debugger
           if (mes == "first") {
-            addCourse({title: row.title, type_id: typeId}).then((res) => {
-              if (res.code == 3) {
-                app.$message({
-                  type: 'success',
-                  message: "保存成功!"
-                });
-              } else {
-                app.$message({
-                  type: 'success',
-                  message: "保存失败! res=" + res
-                });
-              }
-            });
-          } else if (mes == "second" ) {
-            addCourseType({name: row.name}).then((res) => {
-              if (res.code == 3) {
-                app.$message({
-                  type: 'success',
-                  message: "保存成功!"
-                });
-              } else {
-                app.$message({
-                  type: 'success',
-                  message: "保存失败! res=" + res
-                });
-              }
-            });
-          }
+            if (row.is_add == 1) {
+              addCourse({title: row.title, type_id: typeId}).then((res) => {
+                // debugger;
+                if (res.code == 3) {
+                  app.freshCourse();
+                  app.freshType();
+                  app.$message({
+                    type: 'success',
+                    message: "保存成功!"
+                  });
+                } else {
+                  app.$message({
+                    type: 'fail',
+                    message: "保存失败! res=" + res
+                  });
+                }
+              });
+            } else {
+              updateCourse({title: row.title, type_id: typeId}).then((res) => {
+                if (res.code == 3) {
+                  app.freshCourse();
+                  app.freshType();
+                  app.$message({
+                    type: 'success',
+                    message: "修改成功!"
+                  });
+                } else {
+                  this.$message({
+                    type: 'fail',
+                    message: "修改失败! res=" + res
+                  });
+                }
+              });
+            }
+          } else if (mes == "second") {
+            // debugger;
+            if (row.is_add == 1) {
+              addCourseType({name: row.name}).then((res) => {
+                if (res.code == 3) {
+                  app.freshCourse();
+                  app.freshType();
+                  app.$message({
+                    type: 'success',
+                    message: "保存成功!"
+                  });
 
-          // //然后这边重新读取表格数据
-          // app.readMasterUser();
+                } else {
+                  app.$message({
+                    type: 'fail',
+                    message: "保存失败! res=" + res
+                  });
+                }
+              });
+              // } else if ( row.is_add == 0  || "undefined" != typeof row.is_add) {
+            } else {
+              updateCourseType({name: row.name, id: row.id}).then((res) => {
+                if (res.code == 3) {
+                  app.freshCourse();
+                  app.freshType();
+                  ;
+                  app.$message({
+                    type: 'success',
+                    message: "修改成功!"
+                  });
+                } else {
+                  app.$message({
+                    type: 'success',
+                    message: "修改失败! res=" + res
+                  });
+                }
+              });
+            }
+          }
           row.isSet = false;
-        })(this.message, this.optionSelected);
+          row.edit = false;
+          row.is_add = 0;
+        })(this.message, this.optionSelected, this);
       } else {
         // app.master_user.sel = JSON.parse(JSON.stringify(row));
         row.isSet = true;
@@ -249,42 +316,63 @@ export default {
       });
     },
 
-    handleDelete(index, row) {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+    freshType() {
+      getCourseTypes().then((res) => {
+        this.typeData = res;
+      });
+    },
+
+    freshCourse() {
+      findCourseByTypeId({id: this.optionSelected}).then((res) => {
+        this.tableData = res;
+      });
+    },
+
+    handleDelete(row, index) {
+      this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
         center: true
       }).then(() => {
-        deleteConfig(row.id)
-        this.data.splice(index, 1)
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
+        (function (mes, idVal, app) {
+          if (mes == "first") {
+            deleteCourse({id: idVal}).then((res) => {
+              app.freshCourse();
+              app.freshType();
+            });
+          } else if (mes == "second") {
+            deleteCourseType({id: idVal}).then((res) => {
+              app.freshCourse();
+              app.freshType();
+            });
+          }
+          row.isSet = false;
+          row.edit = false;
+        })(this.message, row.id, this);
       }).catch(() => {
-        this.$message({
+        app.$message({
           type: 'info',
           message: '已取消删除'
         })
-      })
+      });
     },
 
     handleAdd() {
       for (const i of this.tableData) {
-        if (i.isSet) return this.$message.warning('请先保存当前编辑项')
+        if (i.isSet) return this.$prompt.warning('请先保存当前编辑项')
       }
 
-      const j = {'id': '', 'title': '', 'img_src': '', 'gmt_create': '', 'isSet': true, 'edit': true}
+      const j = {'id': '', 'title': '', 'img_src': '', 'gmt_create': '', 'isSet': true, 'edit': true, 'is_add': 1}
       this.tableData.push(j)
     },
 
     handleAddType() {
       for (const i of this.typeData) {
-        if (i.isSet) return this.$message.warning('请先保存当前编辑项')
+        if (i.isSet) return this.$prompt.warning('请先保存当前编辑项')
       }
 
-      const j = {'id': '', 'name': '', 'gmt_create': '', 'isSet': true, 'edit': true}
+      const j = {'id': '', 'name': '', 'gmt_create': '', 'isSet': true, 'edit': true, 'is_add': 1}
       this.typeData.push(j)
     },
     handleChange(val) {

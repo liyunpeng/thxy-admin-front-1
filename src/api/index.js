@@ -26,14 +26,6 @@ export const getAllCourseType = query => {
     });
 };
 
-// export const findCourseByTypeId = query => {
-//     return fetch({
-//         url: "./api/findCourseByTypeId",
-//         method: 'post',
-//         data
-//     });
-// };
-
 export function findCourseByTypeId(data) {
     return fetch({
         url: "./api/findCourseByTypeId",
@@ -41,7 +33,6 @@ export function findCourseByTypeId(data) {
         data
     })
 }
-
 
 export function getCourseTypes(data) {
     return fetch({
@@ -83,24 +74,6 @@ export function updateCourse(data) {
     })
 }
 
-
-
-// export const getCourseFileByCourseId = query => {
-//     return request({
-//         url: './api/findCourseFileByCourseId',
-//         method: 'post',
-//         params: query
-//     });
-// };
-
-// export const getCourseFileByCourseId = query => {
-//     return request({
-//         url: './api/findCourseFileByCourseId',
-//         method: 'post',
-//         params: query
-//     });
-// };
-
 export function getCourseFileByCourseId(data) {
     return fetch({
         url: "./api/findCourseFileByCourseId",
@@ -108,7 +81,6 @@ export function getCourseFileByCourseId(data) {
         data
     })
 }
-
 
 export function adminLogin(data) {
     return fetch({
@@ -118,10 +90,18 @@ export function adminLogin(data) {
     })
 }
 
-// export function getCourseTypes(data) {
-//     return fetch({
-//         url: "./api/getCourseTypes",
-//         method: 'post',
-//         data
-//     })
-// }
+export function deleteCourse(data) {
+    return fetch({
+        url: "./api/deleteCourse",
+        method: 'post',
+        data
+    })
+}
+
+export function deleteCourseType(data) {
+    return fetch({
+        url: "./api/deleteCourseType",
+        method: 'post',
+        data
+    })
+}
