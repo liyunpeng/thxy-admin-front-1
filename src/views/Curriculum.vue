@@ -36,16 +36,17 @@
               <!--              <template #default="scope">-->
               <!--                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.img_src" placeholder="图片"/>-->
               <!--                <span v-else>{{ scope.row.img_src }}</span>-->
-
-              <el-image style="width: 50px; height: 50px"
-                        src="http://localhost:8082/api/fileDownload?fileName=tihuxueyuan.png"></el-image>
+              <template #default="scope">
+                <el-image style="width: 50px; height: 50px"
+                          :src="scope.row.img_url"></el-image>
+                </template>
               <!--              </template>-->
             </el-table-column>
             <el-table-column label="课程名">
               <template #default="scope">
                 <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.title" placeholder="课程名"/>
                 <span v-else>{{ scope.row.title }}</span>
-              </template>
+                </template >
             </el-table-column>
             <el-table-column label="创建时间">
               <template #default="scope">
@@ -146,7 +147,7 @@
               将课程图片文件拖到此处，或
               <em>点击上传</em>
             </div>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div slot="tip" class="el-upload__tip">只能上传课程图片文件</div>
 <!--            <template #tip>-->
 <!--              <div class="el-upload__tip">请上传文件的tip</div>-->
 <!--            </template>-->
@@ -202,6 +203,15 @@ export default {
     });
     getCourseTypes().then((res) => {
       this.typeData = res;
+      // for (let i of res) {
+      //   let a = {
+      //     img_url: 'http://localhost:8082/api/fileDownload?file_type=img?file_name=' +  i.img_file_name +
+      //         "?course_id=" + i.id,
+      //     title: i.title,
+      //   };
+      //   this.typeData.push(a);
+      // }
+
     });
   },
 
@@ -212,7 +222,7 @@ export default {
     },
     saveEdit(){
       this.editVisible = false;
-
+      this.freshCourse();
     },
     myformatdate(inputTime) {
       if (!inputTime && typeof inputTime !== 'number') {
@@ -419,7 +429,18 @@ export default {
       console.log("val:" + val)
       this.optionSelected = parseInt(val);
       findCourseByTypeId({id: this.optionSelected}).then((res) => {
-        this.tableData = res;
+        // this.tableData = res;
+
+        for (let i of res) {
+          let a = {
+            img_url: 'http://localhost:8082/api/fileDownload?file_type=img&file_name=' +  i.img_file_name +
+                "&course_id=" + i.id,
+            title: i.title,
+          };
+          this.tableData.push(a);
+        };
+
+
       });
     }
   },
