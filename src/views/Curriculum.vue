@@ -31,19 +31,21 @@
                 <span v-else>{{ scope.row.id }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="课程名">
-              <template #default="scope">
-                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.title" placeholder="课程名"/>
-                <span v-else>{{ scope.row.title }}</span>
-              </template>
-            </el-table-column>
+
             <el-table-column label="图片">
               <!--              <template #default="scope">-->
               <!--                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.img_src" placeholder="图片"/>-->
               <!--                <span v-else>{{ scope.row.img_src }}</span>-->
 
-              <el-image src="http://localhost:8082/api/fileDownload?fileName=tihuxueyuan.png"></el-image>
+              <el-image style="width: 50px; height: 50px"
+                        src="http://localhost:8082/api/fileDownload?fileName=tihuxueyuan.png"></el-image>
               <!--              </template>-->
+            </el-table-column>
+            <el-table-column label="课程名">
+              <template #default="scope">
+                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.title" placeholder="课程名"/>
+                <span v-else>{{ scope.row.title }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="创建时间">
               <template #default="scope">
@@ -61,30 +63,11 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="el-table-add-row" @click="handleAdd()">
+<!--          <div class="el-table-add-row" @click="handleAdd()">-->
+          <div class="el-table-add-row" @click="popupDialog()">
             <span> 添加课程</span>
           </div>
-          <el-row>
-            <el-upload
-                webki
-                webkitdirectory="true"
-                class="upload-demo"
-                :before-upload="handleBefore"
-                drag
-                action="http://localhost:8082/api/multiUpload"
-                multiple
-                :data="{courseId: courseId, duration: audioDuration}"
-            >
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text">
-                将文件拖到此处，或
-                <em>点击上传</em>
-              </div>
-              <template #tip>
-                <div class="el-upload__tip">请上传文件的tip</div>
-              </template>
-            </el-upload>
-          </el-row>
+
         </el-tab-pane>
         <el-tab-pane :label="`课程类型`" name="second">
           <el-table
@@ -135,10 +118,50 @@
 
       </el-tabs>
     </div>
+
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑" v-model="editVisible" width="70%">
+      <el-form label-width="70px">
+        <el-form-item label="课程名">
+          <el-input v-model="form.name" placeholder="请输入课程名"></el-input>
+        </el-form-item>
+<!--        <el-form-item label="地址">-->
+<!--          <el-input v-model="form.address"></el-input>-->
+<!--        </el-form-item>-->
+
+        <el-form-item>
+          <el-upload
+              webki
+              webkitdirectory="true"
+              class="upload-demo"
+              :before-upload="handleBefore"
+              drag
+              action="http://localhost:8082/api/coursePictureUpload"
+              list-type="picture"
+              :file-list="fileList"
+              :data="{course_title: form.name, type_id: optionSelected}"
+          >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">
+              将课程图片文件拖到此处，或
+              <em>点击上传</em>
+            </div>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+<!--            <template #tip>-->
+<!--              <div class="el-upload__tip">请上传文件的tip</div>-->
+<!--            </template>-->
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="editVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveEdit">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
-
-
 <script>
 
 import {ref, reactive} from "vue";
@@ -158,13 +181,18 @@ export default {
   name: "Curriculum",
   data() {
     return {
+      editVisible: false,
       message: "first",
       members: [],
       name: "",
       optionSelected: 0,
       tableData: [],
       options: [],
-      typeData: []
+      form: {
+        name: "",
+      },
+      typeData: [],
+      fileList: []
     }
   },
 
@@ -179,6 +207,13 @@ export default {
 
   methods: {
 
+    handleBefore() {
+
+    },
+    saveEdit(){
+      this.editVisible = false;
+
+    },
     myformatdate(inputTime) {
       if (!inputTime && typeof inputTime !== 'number') {
         return '';
@@ -365,6 +400,11 @@ export default {
 
       const j = {'id': '', 'title': '', 'img_src': '', 'gmt_create': '', 'isSet': true, 'edit': true, 'is_add': 1}
       this.tableData.push(j)
+    },
+
+    popupDialog() {
+      this.fileList = [];
+      this.editVisible = true;
     },
 
     handleAddType() {
