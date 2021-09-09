@@ -39,14 +39,14 @@
               <template #default="scope">
                 <el-image style="width: 50px; height: 50px"
                           :src="scope.row.img_url"></el-image>
-                </template>
+              </template>
               <!--              </template>-->
             </el-table-column>
             <el-table-column label="课程名">
               <template #default="scope">
                 <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.title" placeholder="课程名"/>
                 <span v-else>{{ scope.row.title }}</span>
-                </template >
+              </template>
             </el-table-column>
             <el-table-column label="创建时间">
               <template #default="scope">
@@ -64,7 +64,7 @@
               </template>
             </el-table-column>
           </el-table>
-<!--          <div class="el-table-add-row" @click="handleAdd()">-->
+          <!--          <div class="el-table-add-row" @click="handleAdd()">-->
           <div class="el-table-add-row" @click="popupDialog()">
             <span> 添加课程</span>
           </div>
@@ -126,9 +126,9 @@
         <el-form-item label="课程名">
           <el-input v-model="form.name" placeholder="请输入课程名"></el-input>
         </el-form-item>
-<!--        <el-form-item label="地址">-->
-<!--          <el-input v-model="form.address"></el-input>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="地址">-->
+        <!--          <el-input v-model="form.address"></el-input>-->
+        <!--        </el-form-item>-->
 
         <el-form-item>
           <el-upload
@@ -148,9 +148,9 @@
               <em>点击上传</em>
             </div>
             <div slot="tip" class="el-upload__tip">只能上传课程图片文件</div>
-<!--            <template #tip>-->
-<!--              <div class="el-upload__tip">请上传文件的tip</div>-->
-<!--            </template>-->
+            <!--            <template #tip>-->
+            <!--              <div class="el-upload__tip">请上传文件的tip</div>-->
+            <!--            </template>-->
           </el-upload>
         </el-form-item>
       </el-form>
@@ -182,6 +182,7 @@ export default {
   name: "Curriculum",
   data() {
     return {
+      value: "1",
       editVisible: false,
       message: "first",
       members: [],
@@ -201,18 +202,13 @@ export default {
     getAllCourseType().then((res) => {
       this.options = res;
     });
+
     getCourseTypes().then((res) => {
       this.typeData = res;
-      // for (let i of res) {
-      //   let a = {
-      //     img_url: 'http://localhost:8082/api/fileDownload?file_type=img?file_name=' +  i.img_file_name +
-      //         "?course_id=" + i.id,
-      //     title: i.title,
-      //   };
-      //   this.typeData.push(a);
-      // }
-
     });
+
+    this.optionSelected = 1;
+    this.freshCourse();
   },
 
   methods: {
@@ -220,7 +216,7 @@ export default {
     handleBefore() {
 
     },
-    saveEdit(){
+    saveEdit() {
       this.editVisible = false;
       this.freshCourse();
     },
@@ -369,7 +365,17 @@ export default {
 
     freshCourse() {
       findCourseByTypeId({id: this.optionSelected}).then((res) => {
-        this.tableData = res;
+        this.tableData = [];
+        for (let i of res) {
+          let a = {
+            img_url: 'http://localhost:8082/api/fileDownload?file_type=img&file_name=' +  i.img_file_name +
+                "&course_id=" + i.id,
+            title: i.title,
+            gmt_create: i.gmt_create,
+            id: i.id,
+          };
+          this.tableData.push(a);
+        };
       });
     },
 
@@ -428,20 +434,7 @@ export default {
     handleChange(val) {
       console.log("val:" + val)
       this.optionSelected = parseInt(val);
-      findCourseByTypeId({id: this.optionSelected}).then((res) => {
-        for (let i of res) {
-          let a = {
-            img_url: 'http://localhost:8082/api/fileDownload?file_type=img&file_name=' +  i.img_file_name +
-                "&course_id=" + i.id,
-            title: i.title,
-            gmt_create: i.gmt_create,
-            id: i.id,
-          };
-          this.tableData.push(a);
-        };
-
-
-      });
+      this.freshCourse();
     }
   },
   setup() {

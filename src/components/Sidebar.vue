@@ -38,11 +38,11 @@ import { useRoute } from "vue-router";
 export default {
     setup() {
         const items = [
-            {
-                icon: "el-icon-lx-home",
-                index: "/dashboard",
-                title: "系统首页",
-            },
+            // {
+            //     icon: "el-icon-lx-home",
+            //     index: "/dashboard",
+            //     title: "系统首页",
+            // },
             {
                 icon: "el-icon-lx-copy",
                 index: "/curriculum",
@@ -72,7 +72,7 @@ export default {
                         index: "/form",
                         title: "基本表单",
                     },
-                    
+
                     {
                         index: "4",
                         title: "三级菜单",
