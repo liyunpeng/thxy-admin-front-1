@@ -63,7 +63,7 @@ export default {
             */
             // debugger
             adminLogin({account: param.username, pwd: param.password}).then((res) => {
-                debugger
+                // debugger
                 // this.selectedItem = res;
 
                 console.log(" u " + param.username + ", p=" + param.password);

@@ -282,7 +282,7 @@ export default {
                 }
               });
             } else {
-              updateCourse({title: row.title, type_id: typeId}).then((res) => {
+              updateCourse({title: row.title, type_id: typeId, id: row.id}).then((res) => {
                 if (res.code == 3) {
                   app.freshCourse();
                   app.freshType();
@@ -429,13 +429,13 @@ export default {
       console.log("val:" + val)
       this.optionSelected = parseInt(val);
       findCourseByTypeId({id: this.optionSelected}).then((res) => {
-        // this.tableData = res;
-
         for (let i of res) {
           let a = {
             img_url: 'http://localhost:8082/api/fileDownload?file_type=img&file_name=' +  i.img_file_name +
                 "&course_id=" + i.id,
             title: i.title,
+            gmt_create: i.gmt_create,
+            id: i.id,
           };
           this.tableData.push(a);
         };

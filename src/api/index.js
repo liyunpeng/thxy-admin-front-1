@@ -105,3 +105,11 @@ export function deleteCourseType(data) {
         data
     })
 }
+
+export function updatePwd(data) {
+    return fetch({
+        url: "./api/updatePwd",
+        method: 'post',
+        data
+    })
+}
