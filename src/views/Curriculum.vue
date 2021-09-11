@@ -337,6 +337,7 @@ export default {
           row.edit = false;
           row.is_add = 0;
         })(this.message, this.optionSelected, this);
+
       } else {
         // app.master_user.sel = JSON.parse(JSON.stringify(row));
         row.isSet = true;

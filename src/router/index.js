@@ -16,8 +16,10 @@ const routes = [
                 meta: {
                     title: '系统首页'
                 },
-                component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Dashboard.vue")
-            }, {
+                // component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Dashboard.vue")
+                component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Curriculum.vue")
+            },
+            {
                 path: "/fileManager",
                 name: "fileManager",
                 meta: {
@@ -31,7 +33,8 @@ const routes = [
                     title: '课程设置'
                 },
                 component: () => import ( /* webpackChunkName: "Curriculum" */ "../views/Curriculum.vue")
-            }, {
+            },
+            {
                 path: "/charts",
                 name: "basecharts",
                 meta: {
@@ -78,7 +81,7 @@ const routes = [
                 path: "/upload",
                 name: "upload",
                 meta: {
-                    title: '上传插件'
+                    title: '上传文件'
                 },
                 component: () => import ( /* webpackChunkName: "upload" */ "../views/Upload.vue")
             }, {
