@@ -158,7 +158,6 @@ export default {
         this.audioDuration = parseInt(audioElement.duration); //时长为秒，取整
         // audioElement.src = _URL.createObjectURL(file)
 
-  debugger;
         // this.$refs.fileUpload.submit();
         this.$refs.fileUpload.submit(file);
         // this.$refs.fileUploat.onSubmit();
@@ -177,7 +176,7 @@ export default {
       console.log("22222 ou: " + this.audioDuration);
       //  await sleep(1000);
       // console.log("out" + this.audioDuration);
-      return false;
+      return true;
     }
     ,
 
