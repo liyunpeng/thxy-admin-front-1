@@ -33,7 +33,7 @@
           class="upload-demo"
           :before-upload="getTimes"
           drag
-          action="actionUpload"
+          :action="actionUpload"
           multiple
           :data="{courseId: courseId, duration: audioDuration}"
       >
@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       baseUrl: BASE_API,
-      actionUpload: this.baseUrl + '/api/multiUpload',
+      actionUpload:  BASE_API + '/api/multiUpload',
       audioDuration: 0 ,  //时长
       courseId: 1,
       pdfData: {'courseId': 1},
@@ -93,12 +93,8 @@ export default {
           this.audioDuration = parseInt(videoElement.duration);
           console.log("audioDuration: " + this.audioDuration);
           resolve(true);
-
-
         })
         videoElement.src = _URL.createObjectURL(file)
-
-
         return true
       });
 
@@ -161,10 +157,10 @@ export default {
         // audioElement.src = _URL.createObjectURL(file)
 
         // this.$refs.fileUpload.submit();
-        this.$refs.fileUpload.submit(file);
+        // this.$refs.fileUpload.submit(file);
         // this.$refs.fileUploat.onSubmit();
 
-        console.log("in11111111 88888888 :" + this.audioDuration);
+        console.log("onloadedmetadata duration :" + this.audioDuration);
         return true;
       };
 
@@ -175,7 +171,7 @@ export default {
 
       // // main();
       // // await sleep(2000);
-      console.log("22222 ou: " + this.audioDuration);
+      console.log("return: " + this.audioDuration);
       //  await sleep(1000);
       // console.log("out" + this.audioDuration);
       return true;
