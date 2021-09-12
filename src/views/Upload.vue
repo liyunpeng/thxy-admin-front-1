@@ -33,7 +33,7 @@
           class="upload-demo"
           :before-upload="getTimes"
           drag
-          action="http://localhost:8082/api/multiUpload"
+          action="actionUpload"
           multiple
           :data="{courseId: courseId, duration: audioDuration}"
       >
@@ -64,7 +64,7 @@ import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import defaultSrc from "../assets/img/img.jpg";
 import {getAllCourseIds} from "../api/index";
-
+import { BASE_API } from "../config";
 export default {
   name: "upload",
   components: {
@@ -72,6 +72,8 @@ export default {
   },
   data() {
     return {
+      baseUrl: BASE_API,
+      actionUpload: this.baseUrl + '/api/multiUpload',
       audioDuration: 0 ,  //时长
       courseId: 1,
       pdfData: {'courseId': 1},
@@ -207,6 +209,8 @@ export default {
       // tableData.value = res.list;
       // pageTotal.value = res.pageTotal || 50;
     });
+
+    // this.actionUpload = this.baseUrl + '/api/multiUpload';
   }
   ,
   setup() {

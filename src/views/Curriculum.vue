@@ -137,7 +137,7 @@
               class="upload-demo"
               :before-upload="handleBefore"
               drag
-              action="http://localhost:8082/api/coursePictureUpload"
+              :action="actionUrl"
               list-type="picture"
               :file-list="fileList"
               :data="{course_title: form.name, type_id: optionSelected}"
@@ -164,7 +164,8 @@
   </div>
 </template>
 <script>
-
+// import { BASE_API } from "./config";
+import { BASE_API } from "../config";
 import {ref, reactive} from "vue";
 import {
   getAllCourseType,
@@ -182,6 +183,10 @@ export default {
   name: "Curriculum",
   data() {
     return {
+      baseUrl: BASE_API,
+      // baseUrl: 'http://47.102.146.8:8082',
+      // http://localhost:8082/api/coursePictureUpload
+      actionUrl: BASE_API + '/api/coursePictureUpload',
       value: "1",
       editVisible: false,
       message: "first",
@@ -369,7 +374,7 @@ export default {
         this.tableData = [];
         for (let i of res) {
           let a = {
-            img_url: 'http://localhost:8082/api/fileDownload?file_type=img&file_name=' +  i.img_file_name +
+            img_url:  this.baseUrl + "/api/fileDownload?file_type=img&file_name=" +  i.img_file_name +
                 "&course_id=" + i.id,
             title: i.title,
             gmt_create: i.gmt_create,

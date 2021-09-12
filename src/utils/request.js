@@ -1,11 +1,9 @@
 import axios from 'axios';
-
+import { BASE_API } from '../config';
 const service = axios.create({
     // process.env.NODE_ENV === 'development' 来判断是否开发环境
     // easy-mock服务挂了，暂时不使用了
-    // baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
-    // baseURL: 'http://localhost:8082',
-    baseURL: 'http://47.102.146.8:8082',
+    baseURL: BASE_API,
     timeout: 5000
 });
 

@@ -1,12 +1,10 @@
 import axios from 'axios'
-// import { BASE_API } from '@/config'
+import { BASE_API } from '../config'
 // import { Message } from 'element-ui';
 export default function fetch(options) {
     return new Promise((resolve, reject) => {
         const instance = axios.create({
-            //baseURL: BASE_API,
-            // baseURL:'http://localhost:8082',
-            baseURL: 'http://47.102.146.8:8082',
+            baseURL: BASE_API,
             timeout: 600000
         });
         instance.interceptors.request.use(
