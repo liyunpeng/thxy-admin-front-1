@@ -33,6 +33,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { adminLogin } from "../api/index";
+import { getToken, setToken, removeToken } from '../utils/auth'
 export default {
     setup() {
         const router = useRouter();
@@ -63,7 +64,7 @@ export default {
             */
             // debugger
             adminLogin({account: param.username, pwd: param.password}).then((res) => {
-                // debugger
+                debugger
                 // this.selectedItem = res;
 
                 console.log(" u " + param.username + ", p=" + param.password);
@@ -71,8 +72,12 @@ export default {
                 // console.log(res);
                 // tableData.value = res.list;
                 // pageTotal.value = res.pageTotal || 50;
+
+
+
                 if (res.code == 3 && res.error == null) {
                     ElMessage.success("登录成功");
+                    setToken('sid', res.data.admin_session_id)
                     localStorage.setItem("ms_username", param.username);
                     router.push("/dashboard");
                 } else  if (res.code == 5 ) {
