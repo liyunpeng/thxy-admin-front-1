@@ -31,7 +31,7 @@
       <el-upload
           ref="fileUpload"
           class="upload-demo"
-          :before-upload="getTimes"
+          :before-upload="beforeFile"
           drag
           :action="actionUpload"
           multiple
@@ -84,26 +84,23 @@ export default {
   },
   methods: {
     beforeFile(file) {
-      this.audioDuration = 0;
-      new Promise(function (resolve, reject) {
-        let _URL = window.URL || window.webkitURL
-        let url = URL.createObjectURL(file)
-        var videoElement = new Audio(url);
-        videoElement.addEventListener('loadedmetadata', function (_event) {
+      return  new Promise((resolve, reject) => {
+        var videoElement =  document.createElement('audio');
+        videoElement.addEventListener('loadedmetadata', ()=> {
           this.audioDuration = parseInt(videoElement.duration);
           console.log("audioDuration: " + this.audioDuration);
           resolve(true);
         })
-        videoElement.src = _URL.createObjectURL(file)
-        return true
+        let url = URL.createObjectURL(file)
+        videoElement.src = url;
       });
 
-      if (this.audioDuration == 0){
-        this.$refs.fileUpload.submit();
-        return false;
-      }else{
-        return true;
-      }
+      // if (this.audioDuration == 0){
+      //   this.$refs.fileUpload.submit();
+      //   return false;
+      // }else{
+      //   return true;
+      // }
       // new Promise(function (resolve, reject) {
       //   let _URL = window.URL || window.webkitURL
       //   let url = URL.createObjectURL(file)
@@ -152,6 +149,7 @@ export default {
       //     console.log("in11111111 88888888 :" + app.audioDuration);
       //   };
       // })(this);
+
       audioElement.onloadedmetadata = () => {
         this.audioDuration = parseInt(audioElement.duration); //时长为秒，取整
         // audioElement.src = _URL.createObjectURL(file)
@@ -161,6 +159,7 @@ export default {
         // this.$refs.fileUploat.onSubmit();
 
         console.log("onloadedmetadata duration :" + this.audioDuration);
+        this.$refs.fileUpload.submit();
         return true;
       };
 
@@ -174,9 +173,8 @@ export default {
       console.log("return: " + this.audioDuration);
       //  await sleep(1000);
       // console.log("out" + this.audioDuration);
-      return true;
-    }
-    ,
+      return false;
+    },
 
     handleBefore(file) {
       this.getTimes(file); //
