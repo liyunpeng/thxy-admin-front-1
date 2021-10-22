@@ -20,7 +20,7 @@
                 <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div> -->
-     
+
       <div class="block">
       <span class="demonstration">选择课程:</span>
       <el-cascader
@@ -51,7 +51,7 @@
         <!-- <el-table-column prop="name" label="文件格式"></el-table-column> -->
         <el-table-column prop="duration" label="时长"></el-table-column>
         <el-table-column prop="gmt_create" label="上传时间"></el-table-column>
-        
+
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
             <el-button
@@ -119,10 +119,10 @@ export default {
     mounted() {
     getAllCourseIds().then((res) => {
       // debugger;
-        this.options = res;
+        this.options = res.data;
         // console.log(res);
     });
-  }, 
+  },
   methods: {
       handleChange( val) {
         // debugger;

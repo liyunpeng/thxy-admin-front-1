@@ -200,7 +200,7 @@ export default {
     // debugger
     getAllCourseIds().then((res) => {
       // this.selectedItem = res;
-      this.options = res;
+      this.options = res.data;
       console.log(res);
       // tableData.value = res.list;
       // pageTotal.value = res.pageTotal || 50;
