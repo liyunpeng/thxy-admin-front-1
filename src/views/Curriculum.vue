@@ -48,6 +48,12 @@
                 <span v-else>{{ scope.row.title }}</span>
               </template>
             </el-table-column>
+            <el-table-column label="简介">
+              <template #default="scope">
+                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.introduction" placeholder="课程名"/>
+                <span v-else>{{ scope.row.introduction }}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="创建时间">
               <template #default="scope">
                 <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.gmt_create" placeholder="创建时间"/>
@@ -164,9 +170,7 @@
   </div>
 </template>
 <script>
-// import { BASE_API } from "./config";
 import { BASE_API } from "../config";
-import {ref, reactive} from "vue";
 import {
   getAllCourseType,
   getCourseTypes,
@@ -266,7 +270,7 @@ export default {
           // debugger
           if (mes == "first") {
             if (row.is_add == 1) {
-              addCourse({title: row.title, type_id: typeId}).then((res) => {
+              addCourse({title: row.title,  introduction: row.introduction, type_id: typeId}).then((res) => {
                 // debugger;
                 if (res.code == 3) {
                   app.freshCourse();
@@ -283,7 +287,7 @@ export default {
                 }
               });
             } else {
-              updateCourse({title: row.title, type_id: typeId, id: row.id}).then((res) => {
+              updateCourse({title: row.title, introduction: row.introduction, type_id: typeId, id: row.id}).then((res) => {
                 if (res.code == 3) {
                   app.freshCourse();
                   app.freshType();
@@ -372,15 +376,16 @@ export default {
     freshCourse() {
       findCourseByTypeId({id: this.optionSelected}).then((res) => {
         this.tableData = [];
-        for (let i of res) {
-          let a = {
-            img_url:  this.baseUrl + "/api/fileDownload?file_type=img&file_name=" +  i.img_file_name +
-                "&course_id=" + i.id,
-            title: i.title,
-            gmt_create: i.gmt_create,
-            id: i.id,
+        for (let item of res) {
+          let courseItem = {
+            img_url:  this.baseUrl + "/api/fileDownload?file_type=img&file_name=" +  item.img_file_name +
+                "&course_id=" + item.id,
+            introduction: item.introduction,
+            title: item.title,
+            gmt_create: item.gmt_create,
+            id: item.id,
           };
-          this.tableData.push(a);
+          this.tableData.push(courseItem);
         };
       });
     },
