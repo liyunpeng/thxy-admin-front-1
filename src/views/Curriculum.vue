@@ -50,7 +50,7 @@
             </el-table-column>
             <el-table-column label="简介">
               <template #default="scope">
-                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.introduction" placeholder="课程名"/>
+                <el-input size="small" v-if="scope.row.isSet" v-model="scope.row.introduction" placeholder="课程简介"/>
                 <span v-else>{{ scope.row.introduction }}</span>
               </template>
             </el-table-column>
