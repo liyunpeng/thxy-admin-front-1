@@ -38,8 +38,8 @@ export default {
     setup() {
         const router = useRouter();
         const param = reactive({
-            username: "admin",
-            password: "123123",
+            username: "xincheng",
+            password: "nmwsps",
         });
 
         const rules = {

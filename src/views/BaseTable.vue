@@ -20,7 +20,7 @@
                 <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div> -->
-     
+
       <div class="block">
       <span class="demonstration">选择课程:</span>
       <el-cascader
@@ -51,7 +51,7 @@
         <!-- <el-table-column prop="name" label="文件格式"></el-table-column> -->
         <el-table-column prop="duration" label="时长"></el-table-column>
         <el-table-column prop="gmt_create" label="上传时间"></el-table-column>
-        
+
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
             <el-button
@@ -105,7 +105,7 @@
 <script>
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { fetchData } from "../api/index";
+// import { fetchData } from "../api/index";
 import { getAllCourseIds } from "../api/index";
 import { getCourseFileByCourseId } from "../api/index";
 export default {
@@ -121,7 +121,7 @@ export default {
         this.options = res;
         // console.log(res);
     });
-  }, 
+  },
   methods: {
       handleChange() {
         getCourseFileByCourseId({id: 1}).then((res) => {
@@ -145,12 +145,12 @@ export default {
     const tableData = ref([]);
     const pageTotal = ref(0);
     // 获取表格数据
-    const getData = () => {
-      fetchData(query).then((res) => {
-        tableData.value = res.list;
-        pageTotal.value = res.pageTotal || 50;
-      });
-    };
+    // const getData = () => {
+    //   fetchData(query).then((res) => {
+    //     tableData.value = res.list;
+    //     pageTotal.value = res.pageTotal || 50;
+    //   });
+    // };
 
 
     //   getCourseFileByCourseId(1).then((res) => {

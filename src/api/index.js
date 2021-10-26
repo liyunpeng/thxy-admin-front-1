@@ -2,29 +2,43 @@ import request from '../utils/request';
 import fetch from './fetch'
 
 // const baseUrl =
-export const fetchData = query => {
-    return request({
-        url: './table.json',
-        method: 'get',
-        params: query
-    });
-};
+// export const fetchData = query => {
+//     return request({
+//         url: './table.json',
+//         method: 'get',
+//         params: query
+//     });
+// };
 
-export const getAllCourseIds = query => {
-    return request({
-        url: './api/adminGetAllCourseIds',
-        method: 'post',
-        params: query
-    });
-};
+// export const getAllCourseIds = query => {
+//     return request({
+//         url: './api/adminGetAllCourseIds',
+//         method: 'post',
+//         params: query
+//     });
+// };
 
-export const getAllCourseType = query => {
-    return request({
-        url: './api/adminGetAllCourseType',
-        method: 'post',
-        params: query
-    });
-};
+export function getAllCourseIds() {
+    return fetch({
+        url: "./api/adminGetAllCourseIds",
+        method: 'post'
+    })
+}
+
+// export const getAllCourseType = query => {
+//     return request({
+//         url: './api/adminGetAllCourseType',
+//         method: 'post',
+//         params: query
+//     });
+// };
+
+export function getAllCourseType() {
+    return fetch({
+        url: "./api/adminGetAllCourseType",
+        method: 'post'
+    })
+}
 
 export function findCourseByTypeId(data) {
     return fetch({
@@ -84,7 +98,7 @@ export function getCourseFileByCourseId(data) {
 
 export function adminLogin(data) {
     return fetch({
-        url: "./api/adminLogin",
+        url: "./adminLogin",
         method: 'post',
         data
     })

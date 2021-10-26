@@ -20,7 +20,7 @@
                 <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div> -->
-     
+
       <div class="block">
       <span class="demonstration">选择课程:</span>
       <el-cascader
@@ -130,7 +130,7 @@
 <script>
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { fetchData } from "../api/index";
+// import { fetchData } from "../api/index";
 import { getAllCourseIds } from "../api/index";
 export default {
   name: "basetable",
@@ -144,7 +144,7 @@ export default {
         this.options = res;
         console.log(res);
     });
-  }, 
+  },
   setup() {
     const query = reactive({
       address: "",
@@ -156,10 +156,10 @@ export default {
     const pageTotal = ref(0);
     // 获取表格数据
     const getData = () => {
-      fetchData(query).then((res) => {
-        tableData.value = res.list;
-        pageTotal.value = res.pageTotal || 50;
-      });
+      // fetchData(query).then((res) => {
+      //   tableData.value = res.list;
+      //   pageTotal.value = res.pageTotal || 50;
+      // });
     };
     getData();
 
