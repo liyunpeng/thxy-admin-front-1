@@ -25,6 +25,13 @@ export function getAllCourseIds() {
     })
 }
 
+export function getLogList() {
+    return fetch({
+        url: "./api/logList",
+        method: 'post'
+    })
+}
+
 // export const getAllCourseType = query => {
 //     return request({
 //         url: './api/adminGetAllCourseType',
@@ -55,6 +62,22 @@ export function getCourseTypes(data) {
         data
     })
 }
+
+export function getLogFile(data) {
+    // return fetch({
+    //     url: "./api/logDownload",
+    //     method: 'get',
+    //     data
+    // })
+
+    return request({
+        url: './api/logDownload',
+        method: 'get',
+        params: data
+    })
+}
+
+
 
 export function addCourseType(data) {
     return fetch({

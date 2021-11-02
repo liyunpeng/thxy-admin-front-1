@@ -22,23 +22,23 @@
             </div> -->
 
       <div class="block">
-      <span class="demonstration">选择课程:</span>
-      <el-cascader
-        style="margin: 20px"
-        expand-trigger="hover"
-        v-model="value"
-        :options="options"
-        @change="handleChange(value)"
-      >
-      </el-cascader>
-    </div>
+        <span class="demonstration">选择课程:</span>
+        <el-cascader
+            style="margin: 20px"
+            expand-trigger="hover"
+            v-model="value"
+            :options="options"
+            @change="handleChange(value)"
+        >
+        </el-cascader>
+      </div>
 
       <el-table
-        :data="tableData"
-        border
-        class="table"
-        ref="multipleTable"
-        header-cell-class-name="table-header"
+          :data="tableData"
+          border
+          class="table"
+          ref="multipleTable"
+          header-cell-class-name="table-header"
       >
         <!-- <el-table-column
           prop="id"
@@ -55,29 +55,30 @@
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
             <el-button
-              type="text"
-              icon="el-icon-edit"
-              @click="handleEdit(scope.$index, scope.row)"
-              >编辑
+                type="text"
+                icon="el-icon-edit"
+                @click="handleEdit(scope.$index, scope.row)"
+            >编辑
             </el-button>
             <el-button
-              type="text"
-              icon="el-icon-delete"
-              class="red"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button
+                type="text"
+                icon="el-icon-delete"
+                class="red"
+                @click="handleDelete(scope.$index, scope.row)"
+            >删除
+            </el-button
             >
           </template>
         </el-table-column>
       </el-table>
       <div class="pagination">
         <el-pagination
-          background
-          layout="total, prev, pager, next"
-          :current-page="query.pageIndex"
-          :page-size="query.pageSize"
-          :total="pageTotal"
-          @current-change="handlePageChange"
+            background
+            layout="total, prev, pager, next"
+            :current-page="query.pageIndex"
+            :page-size="query.pageSize"
+            :total="pageTotal"
+            @current-change="handlePageChange"
         ></el-pagination>
       </div>
     </div>
@@ -103,40 +104,40 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-// import { fetchData } from "../api/index";
-import { getAllCourseIds } from "../api/index";
-import { getCourseFileByCourseId } from "../api/index";
+import {ref, reactive} from "vue";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {getAllCourseIds} from "../api/index";
+import {getCourseFileByCourseId} from "../api/index";
+
 export default {
   name: "fileManager",
-    data() {
-       return {
-         tableData: [],
-         options:[]
-       }
-    },
-    mounted() {
+  data() {
+    return {
+      tableData: [],
+      options: []
+    }
+  },
+  mounted() {
     getAllCourseIds().then((res) => {
       // debugger;
-        this.options = res.data;
-        // console.log(res);
+      this.options = res.data;
+      // console.log(res);
     });
   },
   methods: {
-      handleChange( val) {
+    handleChange(val) {
+      // debugger;
+      console.log("val :" + val[val.length - 1]);
+      getCourseFileByCourseId({id: parseInt(val[val.length - 1])}).then((res) => {
         // debugger;
-        console.log("val :" + val[val.length-1]);
-        getCourseFileByCourseId({id: parseInt(val[val.length-1])}).then((res) => {
-          // debugger;
-          // this.selectedItem = res;
+        // this.selectedItem = res;
 
-          this.tableData = res;
-          // console.log(res);
-          // tableData.value = res.list;
-          // pageTotal.value = res.pageTotal || 50;
-        });
-      }
+        this.tableData = res;
+        // console.log(res);
+        // tableData.value = res.list;
+        // pageTotal.value = res.pageTotal || 50;
+      });
+    }
   },
   setup() {
     const query = reactive({
@@ -184,11 +185,12 @@ export default {
       ElMessageBox.confirm("确定要删除吗？", "提示", {
         type: "warning",
       })
-        .then(() => {
-          ElMessage.success("删除成功");
-          tableData.value.splice(index, 1);
-        })
-        .catch(() => {});
+          .then(() => {
+            ElMessage.success("删除成功");
+            tableData.value.splice(index, 1);
+          })
+          .catch(() => {
+          });
     };
 
     // 表格编辑时弹窗和保存
@@ -242,16 +244,20 @@ export default {
   width: 300px;
   display: inline-block;
 }
+
 .table {
   width: 100%;
   font-size: 14px;
 }
+
 .red {
   color: #ff0000;
 }
+
 .mr10 {
   margin-right: 10px;
 }
+
 .table-td-thumb {
   display: block;
   margin: auto;

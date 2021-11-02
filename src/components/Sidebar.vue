@@ -61,7 +61,7 @@ export default {
             {
                 icon: "el-icon-lx-copy",
                 index: "/tabs",
-                title: "消息处理",
+                title: "log管理",
             },
             {
                 icon: "el-icon-lx-calendar",
