@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       baseUrl: BASE_API,
-      actionUpload:  BASE_API + '/api/multiUpload',
+      actionUpload:  BASE_API + '/adminApi/multiUpload',
       audioDuration: 0 ,  //时长
       courseId: 1,
       pdfData: {'courseId': 1},

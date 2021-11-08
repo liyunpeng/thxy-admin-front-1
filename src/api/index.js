@@ -20,21 +20,21 @@ import fetch from './fetch'
 
 export function getAllCourseIds() {
     return fetch({
-        url: "./api/adminGetAllCourseIds",
+        url: "./adminApi/adminGetAllCourseIds",
         method: 'post'
     })
-}
+}getCourseTypes
 
 export function getLogList() {
     return fetch({
-        url: "./api/logList",
+        url: "./adminApi/logList",
         method: 'post'
     })
 }
 
 // export const getAllCourseType = query => {
 //     return request({
-//         url: './api/adminGetAllCourseType',
+//         url: './adminApi/adminGetAllCourseType',
 //         method: 'post',
 //         params: query
 //     });
@@ -42,14 +42,14 @@ export function getLogList() {
 
 export function getAllCourseType() {
     return fetch({
-        url: "./api/adminGetAllCourseType",
+        url: "./adminApi/adminGetAllCourseType",
         method: 'post'
     })
 }
 
 export function findCourseByTypeId(data) {
     return fetch({
-        url: "./api/findCourseByTypeId",
+        url: "./adminApi/findCourseByTypeId",
         method: 'post',
         data
     })
@@ -57,7 +57,7 @@ export function findCourseByTypeId(data) {
 
 export function getCourseTypes(data) {
     return fetch({
-        url: "./api/getCourseTypes",
+        url: "./adminApi/getCourseTypes",
         method: 'post',
         data
     })
@@ -65,13 +65,13 @@ export function getCourseTypes(data) {
 
 export function getLogFile(data) {
     // return fetch({
-    //     url: "./api/logDownload",
+    //     url: "./adminApi/logDownload",
     //     method: 'get',
     //     data
     // })
 
     return request({
-        url: './api/logDownload',
+        url: './adminApi/logDownload',
         method: 'get',
         params: data
     })
@@ -81,7 +81,7 @@ export function getLogFile(data) {
 
 export function addCourseType(data) {
     return fetch({
-        url: "./api/addCourseType",
+        url: "./adminApi/addCourseType",
         method: 'post',
         data
     })
@@ -89,7 +89,7 @@ export function addCourseType(data) {
 
 export function updateCourseType(data) {
     return fetch({
-        url: "./api/updateCourseType",
+        url: "./adminApi/updateCourseType",
         method: 'post',
         data
     })
@@ -97,7 +97,7 @@ export function updateCourseType(data) {
 
 export function addCourse(data) {
     return fetch({
-        url: "./api/addCourse",
+        url: "./adminApi/addCourse",
         method: 'post',
         data
     })
@@ -105,7 +105,7 @@ export function addCourse(data) {
 
 export function updateCourse(data) {
     return fetch({
-        url: "./api/updateCourse",
+        url: "./adminApi/updateCourse",
         method: 'post',
         data
     })
@@ -113,7 +113,7 @@ export function updateCourse(data) {
 
 export function getCourseFileByCourseId(data) {
     return fetch({
-        url: "./api/findCourseFileByCourseId",
+        url: "./adminApi/findCourseFileByCourseId",
         method: 'post',
         data
     })
@@ -129,7 +129,7 @@ export function adminLogin(data) {
 
 export function deleteCourse(data) {
     return fetch({
-        url: "./api/deleteCourse",
+        url: "./adminApi/deleteCourse",
         method: 'post',
         data
     })
@@ -137,7 +137,7 @@ export function deleteCourse(data) {
 
 export function deleteCourseType(data) {
     return fetch({
-        url: "./api/deleteCourseType",
+        url: "./adminApi/deleteCourseType",
         method: 'post',
         data
     })
@@ -145,7 +145,7 @@ export function deleteCourseType(data) {
 
 export function updatePwd(data) {
     return fetch({
-        url: "./api/updatePwd",
+        url: "./adminApi/updatePwd",
         method: 'post',
         data
     })
