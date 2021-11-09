@@ -135,37 +135,32 @@
           <el-input  placeholder="请输入课程名" v-model="editForm.title"></el-input>
         </el-form-item>
 
+        <el-form-item label="图片">
+          <el-image style="width: 100px; height: 100px"  :src="editForm.imageUrl"></el-image>
+        </el-form-item>
 
-        
         <el-form-item>
           <el-upload
-              webki
-              webkitdirectory="true"
-              class="upload-demo"
+              style="width: 100px; height: 100px"
+              class="avatar-uploader"
               :before-upload="handleBefore"
               :action="actionUrl"
               drag
+              ref="upload"
               list-type="picture"
               :file-list="fileList"
-              :data="{course_title: form.name, type_id: optionSelected}"
+              :auto-upload="false"
+              :data="{course_title: form.title, type_id: optionSelected}"
           >
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              将课程图片文件拖到此处，或
-              <em>点击上传</em>
-            </div>
-            <div slot="tip" class="el-upload__tip">只能上传课程图片文件</div>
+<!--            <img v-if="editForm.imageUrl" :src="editForm.imageUrl" class="avatar">-->
+            <i  class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-
-
       </el-form>
-
-
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveEdit">确 定</el-button>
+          <el-button type="primary" @click="editSave">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -240,7 +235,7 @@ export default {
       baseUrl: BASE_API,
       // baseUrl: 'http://47.102.146.8:8082',
       // http://localhost:8082/api/coursePictureUpload
-      actionUrl: BASE_API + '/api/coursePictureUpload',
+      actionUrl: BASE_API + '/adminApi/coursePictureUpload',
       value: "1",
       addVisible: false,
       message: "first",
@@ -275,7 +270,14 @@ export default {
     handleBefore() {
 
     },
-    saveEdit() {
+
+    editSave() {
+      this.editVisible = false;
+      this.$refs.upload.submit();
+      this.freshCourse();
+    },
+
+    addSave() {
       this.addVisible = false;
       this.freshCourse();
     },
@@ -295,7 +297,9 @@ export default {
     handleEditDialog(row, index, cg, data) {
       // this.dialogValue = row.title;
       this.editForm.title = row.title;
-      this.editForm.imageUrl = row.imageUrl;
+      this.editForm.imageUrl = row.img_url;
+
+      // debugger
       this.editVisible = true;
     },
 
@@ -533,6 +537,34 @@ export default {
 </script>
 
 <style>
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
 .el-table-add-row {
   border: 1px dashed #0f6ab4;
   width: 100%;
