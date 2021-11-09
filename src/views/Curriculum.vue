@@ -128,8 +128,6 @@
     </div>
 
     <el-dialog title="编辑课程" v-model="editVisible" width="70%">
-
-
       <el-form label-width="70px">
         <el-form-item label="课程名">
           <el-input  placeholder="请输入课程名" v-model="editForm.title"></el-input>
@@ -141,16 +139,16 @@
 
         <el-form-item>
           <el-upload
-              style="width: 100px; height: 100px"
               class="avatar-uploader"
+              style="width: 100px; height: 100px"
               :before-upload="handleBefore"
-              :action="actionUrl"
+              :action="courseEditUrl"
               drag
               ref="upload"
               list-type="picture"
               :file-list="fileList"
               :auto-upload="false"
-              :data="{course_title: form.title, type_id: optionSelected}"
+              :data="{course_title: form.title,  picture_modify: true,  type_id: optionSelected}"
           >
 <!--            <img v-if="editForm.imageUrl" :src="editForm.imageUrl" class="avatar">-->
             <i  class="el-icon-plus avatar-uploader-icon"></i>
@@ -236,6 +234,7 @@ export default {
       // baseUrl: 'http://47.102.146.8:8082',
       // http://localhost:8082/api/coursePictureUpload
       actionUrl: BASE_API + '/adminApi/coursePictureUpload',
+      courseEditUrl: BASE_API + '/adminApi/courseEdit',
       value: "1",
       addVisible: false,
       message: "first",
