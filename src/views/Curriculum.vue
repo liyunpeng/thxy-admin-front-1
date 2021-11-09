@@ -9,7 +9,7 @@
       <el-tabs v-model="message">
         <el-tab-pane :label="`课程管理`" name="first">
           <div class="block">
-            <span class="demonstration">课程类型:</span>
+            <span class="demonstration">选择课程类型:</span>
             <el-cascader
                 style="margin: 20px"
                 expand-trigger="hover"
@@ -62,7 +62,8 @@
             </el-table-column>
             <el-table-column label="操作">
               <template #default="scope">
-                <el-button type="text" @click="handleEdit(scope.row, scope.$index,  true, this.tableData)">
+<!--                <el-button type="text" @click="handleEdit(scope.row, scope.$index,  true, this.tableData)">-->
+                <el-button type="text" @click="handleEditDialog(scope.row, scope.$index,  true, this.tableData)">
                   {{ scope.row.isSet ? '保存' : "修改" }}
                 </el-button>
                 <el-button type="text" @click="handleDelete(scope.row, scope.$index)">删除</el-button>
@@ -76,7 +77,7 @@
           </div>
 
         </el-tab-pane>
-        <el-tab-pane :label="`课程类型`" name="second">
+        <el-tab-pane :label="`课程类型管理`" name="second">
           <el-table
               :data="typeData"
               border
@@ -126,8 +127,51 @@
       </el-tabs>
     </div>
 
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" v-model="editVisible" width="70%">
+    <el-dialog title="编辑课程" v-model="editVisible" width="70%">
+
+
+      <el-form label-width="70px">
+        <el-form-item label="课程名">
+          <el-input  placeholder="请输入课程名" v-model="editForm.title"></el-input>
+        </el-form-item>
+
+
+        
+        <el-form-item>
+          <el-upload
+              webki
+              webkitdirectory="true"
+              class="upload-demo"
+              :before-upload="handleBefore"
+              :action="actionUrl"
+              drag
+              list-type="picture"
+              :file-list="fileList"
+              :data="{course_title: form.name, type_id: optionSelected}"
+          >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">
+              将课程图片文件拖到此处，或
+              <em>点击上传</em>
+            </div>
+            <div slot="tip" class="el-upload__tip">只能上传课程图片文件</div>
+          </el-upload>
+        </el-form-item>
+
+
+      </el-form>
+
+
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="editVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveEdit">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+
+    <el-dialog title="添加课程" v-model="addVisible" width="70%">
       <el-form label-width="70px">
         <el-form-item label="课程名">
           <el-input v-model="form.name" placeholder="请输入课程名"></el-input>
@@ -162,7 +206,7 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="editVisible = false">取 消</el-button>
+          <el-button @click="addVisible = false">取 消</el-button>
           <el-button type="primary" @click="saveEdit">确 定</el-button>
         </span>
       </template>
@@ -187,12 +231,18 @@ export default {
   name: "Curriculum",
   data() {
     return {
+      editForm: {
+        title: "123",
+        imageUrl: ""
+      },
+      dialogValue: " aa",
+      editVisible: false,
       baseUrl: BASE_API,
       // baseUrl: 'http://47.102.146.8:8082',
       // http://localhost:8082/api/coursePictureUpload
       actionUrl: BASE_API + '/api/coursePictureUpload',
       value: "1",
-      editVisible: false,
+      addVisible: false,
       message: "first",
       members: [],
       name: "",
@@ -226,7 +276,7 @@ export default {
 
     },
     saveEdit() {
-      this.editVisible = false;
+      this.addVisible = false;
       this.freshCourse();
     },
     myformatdate(inputTime) {
@@ -240,6 +290,13 @@ export default {
       localTime = localTime.substr(0, localTime.lastIndexOf('.'));
       localTime = localTime.replace('T', ' ');
       return localTime;
+    },
+
+    handleEditDialog(row, index, cg, data) {
+      // this.dialogValue = row.title;
+      this.editForm.title = row.title;
+      this.editForm.imageUrl = row.imageUrl;
+      this.editVisible = true;
     },
 
     handleEdit(row, index, cg, data) {
@@ -431,7 +488,7 @@ export default {
 
     popupDialog() {
       this.fileList = [];
-      this.editVisible = true;
+      this.addVisible = true;
     },
 
     handleAddType() {
